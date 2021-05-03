@@ -5,33 +5,19 @@ def top2(data):
     
     
     d={}
-    for line in mylist:
+    for idx, line in enumerate(mylist):
         if not line[0] in d.keys():
-            d.setdefault(line[0],[line[1:]])
+            nextline = mylist[(idx + 1) % len(mylist)] 
+            d.setdefault(line[0],[line[0:],nextline, ((float(line[11]) - float(nextline[11]))/ float(line[11]) ) ])
         elif line[0] in d.keys():
-            d[line[0]].append(line[1:])
+            continue
     
-    d2={}
-    for k,v in d.items():
-        if len(v) > 1:
-            d2.setdefault(k, [v[0] , v[1]])
-        elif len(v) == 1:
-            d2.setdefault(k, v)
     
-    d3={}
-    
-    for k,v in d2.items():        
-        if len(v) > 1:
-            if v[0][0]==v[1][0]:
-                for i in v:
-                    d3.setdefault((k,v[0][0]), []).append(i[0:])
-            elif v[0][0] != v[1][0]:
-                for i in v:
-                    d3.setdefault((k,i[0]),i[0:])
-        elif len(v) == 1:
-            d3.setdefault((k,v[0][0]),v[0][0:])
-    
-    return d3
 
-x= top2('melanogaster_vs_pseudobscura.txt')
+    return d
 
+x= top2('Dmel_vs_Dpse.txt')
+y= top2('Dpse_vs_Dmel.txt')
+
+x2=top2('Dmel_vs_Dpse2.txt')
+y2= top2('Dpse_vs_Dmel2.txt')
