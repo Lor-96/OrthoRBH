@@ -60,10 +60,5 @@ def checkhit(data, dictionary):
 
 
 outdict=checkhit('Dmel_vs_Dpse.txt',dict2)
-
-with open('DmelDpse.txt','w') as t:
-    text=[]
-    for k,v in d3.items():
-        text.append(str([k,v[0][1],v[1][1],v[2]]))
-    t.write('\n'.join(text))
+outdict=checkhit('Dpse_vs_Dmel.txt',dict1)
    
