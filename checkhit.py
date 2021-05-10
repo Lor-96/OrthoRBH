@@ -16,11 +16,14 @@ def gtfprotid(gtf):
             
     return d
 
-dict1=gtfprotid('genomic_melanogaster.gtf')
+path=('C:\\Users\\color\\Desktop\\Practice\\Directory Melanogaster\\genomic_melanogaster.gtf')
+dict1=gtfprotid(path)
 
-dict2=gtfprotid('genomic_pseudobscura.gtf')
 
+path2=('C:\\Users\\color\\Desktop\\Practice\\Directory Pseudobscura\\genomic_pseudobscura.gtf')
+dict2=gtfprotid(path2)
 
+del(path,path2)
 
 
 def checkhit(data, dictionary):
@@ -56,6 +59,32 @@ def checkhit(data, dictionary):
     return d2
 
 
+
 outdict=checkhit('Dmel_vs_Dpse.txt',dict2)
-outdict=checkhit('Dpse_vs_Dmel.txt',dict1)
+outdict2=checkhit('Dpse_vs_Dmel.txt',dict1)
+
+def table(diz):
+    text=[]
+    for k,v in diz.items():
+        text.append(str([k,v[0][1],v[1][1],v[2]]))
+    data=[]
+    for line in text:
+        data.append(line.split())
+    l=[]
+    for line in data:
+        l.append([line[0].strip("[],('"),line[2].strip("[],('"),line[3].strip("[],('"), line[4].strip("[],('")])
+    x=[]
+    for line in l:
+        x.append("\t".join(line))
+    return x
+
+file1=table(outdict)
+with open('DmelDpse.txt','w') as t:
+    for line in file1:
+        t.write(line + '\n')
+    
+file2=table(outdict2)
+with open('DpseDmel.txt','w') as t:
+    for line in file2:
+        t.write(line + '\n')
    
