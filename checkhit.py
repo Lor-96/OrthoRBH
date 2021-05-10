@@ -16,12 +16,9 @@ def gtfprotid(gtf):
             
     return d
 
-path=('C:\\Users\\color\\Desktop\\Practice\\Directory Melanogaster\\genomic_melanogaster.gtf')
-dict1=gtfprotid(path)
+dict1=gtfprotid('genomic_melanogaster.gtf')
 
-
-path2=('C:\\Users\\color\\Desktop\\Practice\\Directory Pseudobscura\\genomic_pseudobscura.gtf')
-dict2=gtfprotid(path2)
+dict2=gtfprotid('genomic_pseudobscura.gtf')
 
 
 
