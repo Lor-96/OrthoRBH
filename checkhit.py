@@ -43,21 +43,27 @@ def checkhit(data, dictionary):
             i=1
             nextline = mylist[(idx + i) % len(mylist)]
             while True:
-                if get_key(nextline[1]) !=  get_key(line[1]):
-                    d.setdefault(line[0], [line[0:], nextline, ((float(line[11]) - float(nextline[11]))/ float(line[11]) ) ])
+                if nextline[0] == line[0]:
+                    if get_key(nextline[1]) !=  get_key(line[1]):
+                        d.setdefault(line[0], [line[0:], nextline, ((float(line[11]) - float(nextline[11]))/ float(line[11]) ) ])
+                        break
+                    i+=1
+                    nextline = mylist[(idx + i) % len(mylist)]
+                    
+                elif nextline[0] != line[0]:
+                    d.setdefault(line[0], [line[0:], ((float(line[11]) / float(line[11]) ) )])
                     break
-                i+=1
-                nextline = mylist[(idx + i) % len(mylist)]
                 
         elif line[0] in d.keys():
-            continue
+                continue
+                
+        
 
     d2={}
     for k,v in d.items():
         d2.setdefault(tuple(v[0][0:2]), v[0:])
 
     return d2
-
 
 
 outdict=checkhit('Dmel_vs_Dpse.txt',dict2)
