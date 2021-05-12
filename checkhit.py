@@ -27,16 +27,20 @@ del(path,path2)
 
 
 def checkhit(data, dictionary):
-    file = open(data,'r')
-    file= file.readlines()
-    mylist=[line.split() for line in file if not line.startswith('#')]
+    
+    
+    def skip_comments(filename):
+        for line in filename:
+            if not line.startswith('#'):
+                yield line.split()
     
     def get_key(val):
         for key, value in dictionary.items():
             for x in value:
                 if val == x:
                     return key
-
+    
+    mylist = list(skip_comments(open(data, 'r')))
     d={}
     for idx, line in enumerate(mylist):
         if not line[0] in d.keys():
@@ -72,7 +76,10 @@ outdict2=checkhit('Dpse_vs_Dmel.txt',dict1)
 def table(diz):
     text=[]
     for k,v in diz.items():
-        text.append(str([k,v[0][1],v[1][1],v[2]]))
+        if  len(v)== 3:
+            text.append(str([k,v[0][1],v[1][1],v[2]]))
+        elif len(v)==2:
+            text.append(str([k,v[0][1],v[0][1],v[1]]))
     data=[]
     for line in text:
         data.append(line.split())
@@ -84,7 +91,7 @@ def table(diz):
         x.append("\t".join(line))
     return x
 
-file1=table(outdict)
+file1=table(d2)
 with open('DmelDpse.txt','w') as t:
     for line in file1:
         t.write(line + '\n')
@@ -93,4 +100,3 @@ file2=table(outdict2)
 with open('DpseDmel.txt','w') as t:
     for line in file2:
         t.write(line + '\n')
-   
