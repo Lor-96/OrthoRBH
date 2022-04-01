@@ -4,6 +4,7 @@ pseudoobscura_as_q=#'PERCORSO_FILE'
 conv_melasq=#'PERCORSO_FILE_ID_CONVERTED_TO_REFSEQ'
 conv_pseasq=#'PERCORSO_FILE_ID_CONVERTED_TO_REFSEQ'
 
+#This first take only the first hit in order to make a plot of the distribution of the percentage of identity of the blastp 
 def firsthitpident(blastp):
     d={}
     with open(blastp) as file:
@@ -45,7 +46,7 @@ import matplotlib.pyplot as plt
 plt.hist(x['pident'],bins=30, range=[0,100],rwidth=0.8, color='blue')
 plt.hist(y['pident'], bins=30, range=[0,100], rwidth=0.8,color ='red')
 
-
+#From here starts the process to find the Best Reciprocal Hits strating from the blastp
 
 def blastp_2ndhitratio(blastp,perc):
     
@@ -124,7 +125,7 @@ def getbrh(diz1,diz2,thrs):
         for j in brh2:
             if x==j:
                 counter+=1
-    if counter== len(brh):
+    if counter==len(brh):
         return brh
     else:
         return print('ERROR')
