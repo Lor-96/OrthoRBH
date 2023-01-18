@@ -45,8 +45,8 @@ class exaligntab():
             file_name=f'exon_match_frequency_{species}.png'
             filename=unique_file(f"{file_name}")
             title=f'Exon match percentage frequency {species}'
-            n, bins, patches = plt.hist(dataframe['EX_M%'], num_bins, facecolor='red', alpha=0.5,rwidth=0.8)
             plt.figure()
+            plt.hist(dataframe['EX_M%'], num_bins, facecolor='red', alpha=0.5,rwidth=0.8)
             plt.xlabel('EX_M%')
             plt.ylabel('Frequency')
             plt.title(title, loc='center')
@@ -59,8 +59,8 @@ class exaligntab():
             file_name=f'score_match_distribution_{species}.png'
             filename=unique_file(f"{file_name}")
             title=f'Score match distribution {species}'
-            n, bins, patches = plt.hist(dataframe['SCORE']/dataframe['QEXN'], num_bins, facecolor='blue', alpha=0.5,rwidth=0.8)
             plt.figure()
+            plt.hist(dataframe['SCORE']/dataframe['QEXN'], num_bins, facecolor='blue', alpha=0.5,rwidth=0.8)
             plt.xlabel('Normalized SCORE')
             plt.ylabel('Frequency')
             plt.title(title, loc='center')
