@@ -18,6 +18,10 @@ done bewteen two species comparing one isoform per gene.
 For the transcripts analysis is recommended to use the Exalign Software or make a BLASTN between all the transcripts for both species and use them
 as input for the tool.
 
+Here are reported as example two file of input from a BLASTP analysis between Homo Sapiens and Mus Musculus, this file contain only the first 1000 proteins
+aligned by the BLASTP, the GTF files need to be downloaded from the [RefSeq index of genomes](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/), choosing the
+species you want, for the example you need to use *Homo Sapiens* as species1 and *Mus Musculus* as species2.
+
 For this software you need ALL the arguments as input, and mainly need:
 - BLAST output (-outfmt 7) of the first species against the second 
 - BLAST output (-outfmt 7) of the second species against the first
