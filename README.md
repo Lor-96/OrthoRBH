@@ -8,6 +8,8 @@ As input file is possible to use also the output of the Exalign Software (i.e., 
 if this type of file is used, both the recommended percentage argument (```-perc```)
 and the recommended bitscore argument (```-bit```) are 0, because the Exalign gives already a score for the match of the 2 input files.
 
+The GTF file can be used also in gzipped extension (```sp1.gtf.gz```).
+
 The tool can return also the discrepancies found during the assegnation of the gene names while reading the protein/transcripts.
 
 In order to efficiently predict orthologs, for the analysis of the proteins is recommended to use in this tool as input the BLASTP output 
