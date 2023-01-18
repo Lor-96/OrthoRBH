@@ -5,8 +5,8 @@ This software can perform a Reciprocal Best Hit (RBH) using the BLAST output as 
 for the 2 chosen species.
 
 As input file is possible to use also the output of the Exalign Software (i.e., exalign_example.tsv.tab),
-if this type of file is used, both the recommended percentage argument (-perc)
-and the recommended bitscore argument (-bit) are 0, because the Exalign gives already a score for the match of the 2 input files.
+if this type of file is used, both the recommended percentage argument (```-perc```)
+and the recommended bitscore argument (```-bit```) are 0, because the Exalign gives already a score for the match of the 2 input files.
 
 The tool can return also the discrepancies found during the assegnation of the gene names while reading the protein/transcripts.
 
