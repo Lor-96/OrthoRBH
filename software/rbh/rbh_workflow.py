@@ -4,6 +4,7 @@ from software.library.gtf_funcitons import get_name_protein_transcript_from_cds_
 from software.library.rbh import Rbh
 from software.library.doubledictionary import doubledictionary_pipeline
 from software.library.functions import unique_file
+from software.rbh.exalign_workflow import exalign_pipeline
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
@@ -184,20 +185,31 @@ def saveplotbit(dataframe,species=str):
     plt.savefig(f"{filename}")
 
 def rbh_workflow(blast1,blast2,gtfsp1,gtfsp2,percentage,threshold):
-    rbh=bestreciprocal(blast1,blast2,percentage,threshold)
-    sp1,sp2=Rbh(rbh).getblastlines()
-    saveplotperc(sp1,'species1')
-    saveplotperc(sp2,'species2')
-    saveplotbit(sp1,'species1')
-    saveplotbit(sp2,'species2')
-    rbh_p=[k.strip('#ID:') for k in Rbh(rbh).name]
-    Rbh(rbh).print_rbh()
-    dfsp1=get_name_protein_transcript_from_cds_in_gtf(gtfsp1)
-    dfsp2=get_name_protein_transcript_from_cds_in_gtf(gtfsp2)
-    pro_name_sp1=dict(zip(dfsp1['Protein'],dfsp1['Gene name']))
-    pro_name_sp2=dict(zip(dfsp2['Protein'],dfsp2['Gene name']))
-    rbhprotein=[i.strip('\n').split('\t') for i in rbh_p]
-    doubledictionary_pipeline(rbhprotein,pro_name_sp1,pro_name_sp2)
+    if blast1.endswith('.tsv.tab') and blast2.endswith('.tsv.tab'):
+        rbh=exalign_pipeline(blast1,blast2,percentage,threshold)
+        rbh_exa=[k.strip('#ID:') for k in Rbh(rbh).name]
+        Rbh(rbh).print_rbh()
+        dfsp1=get_name_protein_transcript_from_cds_in_gtf(gtfsp1)
+        dfsp2=get_name_protein_transcript_from_cds_in_gtf(gtfsp2)
+        exa_name_sp1=dict(zip(dfsp1['Transcript'],dfsp1['Gene name']))
+        exa_name_sp2=dict(zip(dfsp2['Transcript'],dfsp2['Gene name']))
+        rbh_exalign=[i.strip('\n').split('\t') for i in rbh_exa]
+        doubledictionary_pipeline(rbh_exalign,exa_name_sp1,exa_name_sp2)
+    else :
+        rbh=bestreciprocal(blast1,blast2,percentage,threshold)
+        sp1,sp2=Rbh(rbh).getblastlines()
+        saveplotperc(sp1,'species1')
+        saveplotperc(sp2,'species2')
+        saveplotbit(sp1,'species1')
+        saveplotbit(sp2,'species2')
+        rbh_p=[k.strip('#ID:') for k in Rbh(rbh).name]
+        Rbh(rbh).print_rbh()
+        dfsp1=get_name_protein_transcript_from_cds_in_gtf(gtfsp1)
+        dfsp2=get_name_protein_transcript_from_cds_in_gtf(gtfsp2)
+        pro_name_sp1=dict(zip(dfsp1['Protein'],dfsp1['Gene name']))
+        pro_name_sp2=dict(zip(dfsp2['Protein'],dfsp2['Gene name']))
+        rbhprotein=[i.strip('\n').split('\t') for i in rbh_p]
+        doubledictionary_pipeline(rbhprotein,pro_name_sp1,pro_name_sp2)
 
     
 
