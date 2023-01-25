@@ -1,4 +1,4 @@
-# RBH_software
+# OrthoRBH
 ## Introduction
 
 This software can perform a Reciprocal Best Hit (RBH) using the BLAST output as input file and return the predicted orthologs
