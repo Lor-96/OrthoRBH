@@ -30,11 +30,16 @@ For this software you need ALL the arguments as input, and mainly need:
 - Threshold for identity percentage 
 - Threshold for bitscore percentage
 
+There are also optional argument that are:
+- PVALUE is a value that is by default set to 0.001 and is necessary to filt together with the SCORE the Exalign table hits, it is recommended to not change it if you're not sure of the results.
+- SCORE  is a value that is by default set to 0 and is necessary to filt together with the SCORE the Exalign table hits, it is recommended to not change it if you're not sure of the results.
+- Transcripts is a boolean value set it as "True" if the BLAST output that you usa as input contain transcripts instead of proteins.
+
 
 ### Usage
 
 ```
-usage: main.py [-h] -b1 --blast1 -b2 --blast2 -gtf1 --gtf1 -gtf2 --gtf2 -perc --percentage -bit --bitscore
+usage: main.py [-h] -b1 --blast1 -b2 --blast2 -gtf1 --gtf1 -gtf2 --gtf2 -perc --percentage -bit --bitscore [-pv --pvalue] [-sc --score] [-tr --transcript]
 
 optional arguments:
   -h, --help          show this help message and exit
@@ -44,6 +49,9 @@ optional arguments:
   -gtf2 --gtf2        GTF file for Species 2
   -perc --percentage  Threshold for the percentage of identity
   -bit --bitscore     Threshold for the Bitscore
+  -pv --pvalue        Exalign Threshold for the pvalue
+  -sc --score         Exalign threshold for the score
+  -tr --transcript    Set it as "True" if in the BLAST there are transcripts instead of proteins
 ```
 
  #### Example Command Windows
