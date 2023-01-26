@@ -95,7 +95,7 @@ class Rbh:
         line=[]
         for v in self.val:
             line.append(v)
-        filename=unique_file('exalign_RBH.txt')
+        filename=unique_file('RBH.txt')
         with open(filename,'w') as text:
             text.write('\n\n'.join(line))
         text.close()

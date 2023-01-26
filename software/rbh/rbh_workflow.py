@@ -188,7 +188,6 @@ def rbh_workflow(blast1,blast2,gtfsp1,gtfsp2,percentage,threshold):
     if blast1.endswith('.tsv.tab') and blast2.endswith('.tsv.tab'):
         rbh=exalign_pipeline(blast1,blast2,percentage,threshold)
         rbh_exa=[k.strip('#ID:') for k in Rbh(rbh).name]
-        Rbh(rbh).print_rbh()
         dfsp1=get_name_protein_transcript_from_cds_in_gtf(gtfsp1)
         dfsp2=get_name_protein_transcript_from_cds_in_gtf(gtfsp2)
         exa_name_sp1=dict(zip(dfsp1['Transcript'],dfsp1['Gene name']))
