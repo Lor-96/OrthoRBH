@@ -73,7 +73,7 @@ class exaligntab():
         return None
 
 
-    def exaligntop2(self,percentage):
+    def exaligntop2(self,percentage,pval,score):
         with open(self.path,'r') as file:
             import pandas as pd
     
@@ -93,7 +93,7 @@ class exaligntab():
                 v=[query,floatorint(col[1].strip()), subject] + list(map(floatorint,col[3:]))
                 lista.append(v)
         df=pd.DataFrame(lista,columns=header) 
-        df=df.loc[(df['PVALUE'] < 0.001) & (df['SCORE'] >= 0)]
+        df=df.loc[(df['PVALUE'] < pval) & (df['SCORE'] >= score)]#0.001, 0
         f=iter(df.values.tolist())
         d={}
         for line in f:
@@ -122,10 +122,10 @@ class exaligntab():
             d2.setdefault(k, v[0:])
         return d2
 
-    def exalignrbh(self,tab2, percentage, threshold):
+    def exalignrbh(self,tab2, percentage, threshold,pval,score):
         from software.library.functions import unique_file
-        sp1=self.exaligntop2(percentage)
-        sp2=exaligntab(tab2).exaligntop2(percentage)
+        sp1=self.exaligntop2(percentage,pval,score)
+        sp2=exaligntab(tab2).exaligntop2(percentage,pval,score)
         file1={}
         for k,v in sp1.items():
             if threshold != 0:    

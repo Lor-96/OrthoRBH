@@ -89,9 +89,9 @@ def print_final_tab_brh(brh_protein,dict1,dict2):
     from software.library.functions import unique_file
     lista=[]
     for i in brh_protein:
-        v1=dict1.get(i[0].strip())
-        v2=dict2.get(i[1].strip())
-        val = i[0].strip().split('.')[0]+'\t'+v1.strip()+'\t'+i[1].strip().split('.')[0]+'\t'+v2.strip()
+        v1=str(dict1.get(i[0].strip())).strip()
+        v2=str(dict2.get(i[1].strip())).strip()
+        val = i[0].strip().split('.')[0]+'\t'+v1+'\t'+i[1].strip().split('.')[0]+'\t'+v2
         lista.append(val)
     filename=unique_file('list_BRH.txt')
     with open(filename,'w') as txt:
@@ -99,13 +99,13 @@ def print_final_tab_brh(brh_protein,dict1,dict2):
     txt.close()
     return None
 
-def print_exalign_final_tab_brh(brh_protein,dict1,dict2):
+def print_exalign_final_tab_brh(rbh,dict1,dict2):
     from software.library.functions import unique_file
     lista=[]
-    for i in brh_protein:
-        v1=dict1.get(i[0].strip())
-        v2=dict2.get(i[1].strip())
-        val = i[0].strip().split('.')[0]+'\t'+v1.strip()+'\t'+i[1].strip().split('.')[0]+'\t'+v2.strip()
+    for i in rbh:
+        v1=str(dict1.get(i[0].strip())).strip()
+        v2=str(dict2.get(i[1].strip())).strip()
+        val = i[0].strip().split('.')[0]+'\t'+v1+'\t'+i[1].strip().split('.')[0]+'\t'+v2
         lista.append(val)
     filename=unique_file('list_exalign_BRH.txt')
     with open(filename,'w') as txt:

@@ -184,9 +184,9 @@ def saveplotbit(dataframe,species=str):
     plt.title(title, loc='center')
     plt.savefig(f"{filename}")
 
-def rbh_workflow(blast1,blast2,gtfsp1,gtfsp2,percentage,threshold):
+def rbh_workflow(blast1,blast2,gtfsp1,gtfsp2,percentage,threshold,pval,score,transcript):
     if blast1.endswith('.tsv.tab') and blast2.endswith('.tsv.tab'):
-        rbh=exalign_pipeline(blast1,blast2,percentage,threshold)
+        rbh=exalign_pipeline(blast1,blast2,percentage,threshold,pval,score)
         rbh_exa=[k.strip('#ID:') for k in Rbh(rbh).name]
         dfsp1=get_name_protein_transcript_from_cds_in_gtf(gtfsp1)
         dfsp2=get_name_protein_transcript_from_cds_in_gtf(gtfsp2)
@@ -205,10 +205,15 @@ def rbh_workflow(blast1,blast2,gtfsp1,gtfsp2,percentage,threshold):
         Rbh(rbh).print_rbh()
         dfsp1=get_name_protein_transcript_from_cds_in_gtf(gtfsp1)
         dfsp2=get_name_protein_transcript_from_cds_in_gtf(gtfsp2)
-        pro_name_sp1=dict(zip(dfsp1['Protein'],dfsp1['Gene name']))
-        pro_name_sp2=dict(zip(dfsp2['Protein'],dfsp2['Gene name']))
-        rbhprotein=[i.strip('\n').split('\t') for i in rbh_p]
-        doubledictionary_pipeline(rbhprotein,pro_name_sp1,pro_name_sp2)
+        rbh_pro_tr=[i.strip('\n').split('\t') for i in rbh_p]
+        if transcript == False:
+                pro_name_sp1=dict(zip(dfsp1['Protein'],dfsp1['Gene name']))
+                pro_name_sp2=dict(zip(dfsp2['Protein'],dfsp2['Gene name']))
+                doubledictionary_pipeline(rbh_pro_tr,pro_name_sp1,pro_name_sp2)
+        if transcript == True:
+                trnscr_name_sp1=dict(zip(dfsp1['Transcript'],dfsp1['Gene name']))
+                trnscr_name_sp2=dict(zip(dfsp2['Transcript'],dfsp2['Gene name']))
+                doubledictionary_pipeline(rbh_pro_tr,trnscr_name_sp1,trnscr_name_sp2)
 
     
 
