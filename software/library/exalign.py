@@ -267,7 +267,7 @@ class exaligntab():
                                 brh.setdefault(key,value)
 
         print("The number of the Best Reciprocal Hit between the 2 species is: "+str(len(brh.keys())))
-
+        
         return brh
     
 class exaligndict_rbh(exaligntab):

@@ -2,7 +2,7 @@
 from software.library.blast import Blast
 from software.library.gtf_funcitons import get_name_protein_transcript_from_cds_in_gtf
 from software.library.rbh import Rbh
-from software.library.doubledictionary import doubledictionary_pipeline
+from software.library.doubledictionary import doubledictionary_pipeline,doubledictionary_exalign_pipeline
 from software.library.functions import unique_file
 from software.rbh.exalign_workflow import exalign_pipeline
 import pandas as pd
@@ -194,7 +194,7 @@ def rbh_workflow(blast1,blast2,gtfsp1,gtfsp2,percentage,threshold):
         exa_name_sp1=dict(zip(dfsp1['Transcript'],dfsp1['Gene name']))
         exa_name_sp2=dict(zip(dfsp2['Transcript'],dfsp2['Gene name']))
         rbh_exalign=[i.strip('\n').split('\t') for i in rbh_exa]
-        doubledictionary_pipeline(rbh_exalign,exa_name_sp1,exa_name_sp2)
+        doubledictionary_exalign_pipeline(rbh_exalign,exa_name_sp1,exa_name_sp2)
     else :
         rbh=bestreciprocal(blast1,blast2,percentage,threshold)
         sp1,sp2=Rbh(rbh).getblastlines()
