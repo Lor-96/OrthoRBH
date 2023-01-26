@@ -48,7 +48,7 @@ optional arguments:
 
  #### Example Command Windows
 ```
-python main.py -b1 '.\inputblast1.txt' -b2 '.\inputblast2.txt' -gtf1 '.\sp1.gtf' -gtf2 '.\sp2.gtf' -perc 40 -bit 0.2
+python main.py -b1 .\inputblast1.txt -b2 .\inputblast2.txt -gtf1 .\sp1.gtf -gtf2 .\sp2.gtf -perc 40 -bit 0.2
 ```
 
 #### Example Command Linux
