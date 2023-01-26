@@ -267,10 +267,7 @@ class exaligntab():
                                 brh.setdefault(key,value)
 
         print("The number of the Best Reciprocal Hit between the 2 species is: "+str(len(brh.keys())))
-        filename=unique_file(f"exalignbrh.txt")
-        with open(filename,'w') as txt:
-            txt.write('\n\n'.join(brh.values()))
-        txt.close()
+
         return brh
     
 class exaligndict_rbh(exaligntab):
