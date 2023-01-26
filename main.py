@@ -13,10 +13,14 @@ if __name__ == "__main__":
     gtfsp2=params['gtf2']
     percentage=floatorint(params['perc'])
     bitscore=floatorint(params['bit'])
+    pvalue=floatorint(params['pv'])
+    score=floatorint(params['sc'])
+    transcript=params['tr']
+
 
     import software.rbh.rbh_workflow as rbhw
 
-    rbhw.rbh_workflow(blast1,blast2,gtfsp1,gtfsp2,percentage,bitscore)
+    rbhw.rbh_workflow(blast1,blast2,gtfsp1,gtfsp2,percentage,bitscore,pvalue,score,transcript)
     
 
 
