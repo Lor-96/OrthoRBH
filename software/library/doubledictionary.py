@@ -85,10 +85,10 @@ def trimming_discrepancy_dd(dictionary):
             convertible.setdefault(k,v)
     return convertible,notconvertible
 
-def print_final_tab_brh(brh_protein,dict1,dict2):
+def print_final_tab_brh(rbh_pro_tr,dict1,dict2):
     from software.library.functions import unique_file
     lista=[]
-    for i in brh_protein:
+    for i in rbh_pro_tr:
         v1=str(dict1.get(i[0].strip())).strip()
         v2=str(dict2.get(i[1].strip())).strip()
         val = i[0].strip().split('.')[0]+'\t'+v1+'\t'+i[1].strip().split('.')[0]+'\t'+v2
