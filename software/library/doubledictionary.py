@@ -113,6 +113,84 @@ def print_exalign_final_tab_brh(rbh,dict1,dict2):
     txt.close()
     return None
 
+def compare_tp(dictionary1,dictionary2):
+    def list_dd(dictionary):
+        flist=[]
+        for k,v in dictionary.items():
+            for i,j in v.items():
+                val=k.strip()+'\t'+i.strip()
+                flist.append(val)
+        return flist
+    l1=list_dd(dictionary1)
+    l2=list_dd(dictionary2)
+    def comparison2(lista1,lista2):
+        common=[]
+        notcommon=[]
+        for i in lista1:
+            if i in lista2:
+                common.append(i)
+            else:
+                notcommon.append(i)
+        return common,notcommon
+    
+    common,notcommon=comparison2(l1,l2)
+
+    return common,notcommon
+
+def compare_dd(dictionary1,dictionary2):
+    def list_dd(dictionary):
+        flist=[]
+        for k,v in dictionary.items():
+            for i,j in v.items():
+                val=k.strip()+'\t'+i.strip()
+                flist.append(val)
+        return flist
+    l1=list_dd(dictionary1)
+    l2=list_dd(dictionary2)
+    def comparison(lista1,lista2):
+        common=[]
+        notcommonl1=[]
+        notcommonl2=[]
+        for i in lista1:
+            if i in lista2:
+                common.append(i)
+            else:
+                notcommonl1.append(i)
+        for i in lista2:
+            if i not in lista1:
+                notcommonl2.append(i)
+        return common,notcommonl1,notcommonl2
+    
+    common,notcommon1,notcommon2=comparison(l1,l2)
+
+    return common,notcommon1,notcommon2
+
+def compare_transcript(lista1,lista2):
+    def gluevalues(lista):
+        newlist=[]
+        for i in lista:
+            if len(i) > 1:
+                if len(i)==2:
+                    val=i[0]+'\t'+i[1]
+                    newlist.append(val)
+            else:
+                newlist.append(i)
+        return newlist
+    l1=gluevalues(lista1)
+    l2=gluevalues(lista2)
+    common=[]
+    notcommonl1=[]
+    notcommonl2=[]
+    for i in l1:
+        if i in l2:
+            common.append(i)
+        else:
+            notcommonl1.append(i)
+    for i in l2:
+        if i not in l1:
+            notcommonl2.append(i)
+    return common, notcommonl1, notcommonl2
+
 def doubledictionary_pipeline(rbh,converter1,converter2):
     brh_dd=gene_name_result(rbh,converter1,converter2)
     brh_discrepancy=[k for k,v in brh_dd.items() if len(v) != 1]
@@ -140,3 +218,69 @@ def doubledictionary_exalign_pipeline(rbh,converter1,converter2):
         print_exalign_dd(brh_dd)
         print('No discrepancy found')
         print_exalign_final_tab_brh(rbh, converter1,converter2)
+
+def doubledictionary_comaparison(rbh,exalignrbh,cdsrbh,gtf1,gtf2):
+    from software.library.doubledictionary import compare_tp,compare_dd,gene_name_result, trimming_discrepancy_dd
+    from software.library.gtf_functions import get_name_protein_transcript_from_cds_in_gtf
+    import pandas as pd
+    from software.library.rbh import Rbh
+    from software.library.exalign import exaligndict_rbh
+
+    sp1=get_name_protein_transcript_from_cds_in_gtf(gtf1)
+    sp2=get_name_protein_transcript_from_cds_in_gtf(gtf2)
+    brhprotein=list(Rbh(rbh).readrbhpath().keys())
+    brhcds=list(Rbh(cdsrbh).readrbhpath().keys())
+    brhexa=list(exaligndict_rbh(exalignrbh).name)
+    brhprotein=[i.strip('\n').split('\t') for i in brhprotein]
+    brhcds=[i.strip('\n').split('\t') for i in brhcds]
+    brhexa=[i.strip('\n').split('\t') for i in brhexa]
+    p_sp1=dict(zip(sp1['Protein'],sp1['Gene name']))
+    t_sp1=dict(zip(sp1['Transcript'],sp1['Gene name']))
+    p_sp2=dict(zip(sp2['Protein'],sp2['Gene name']))
+    t_sp2=dict(zip(sp2['Transcript'],sp2['Gene name']))
+    exalign_dd=gene_name_result(brhexa,t_sp1,t_sp2)
+    standard_dd=gene_name_result(brhcds,t_sp1,t_sp2)
+    brhprotein_dd=gene_name_result(brhprotein,p_sp1,p_sp2)
+
+    exalign_discrepancy=[k for k,v in exalign_dd.items() if len(v) != 1]
+    standard_discrepancy=[k for k,v in standard_dd.items() if len(v) != 1]
+    brhprotein_discrepancy=[k for k,v in brhprotein_dd.items() if len(v) != 1]
+
+    exa_conv_dd, exa_nconv_dd=trimming_discrepancy_dd(exalign_dd)
+    cds_conv_dd,cds_nconv_dd=trimming_discrepancy_dd(standard_dd)
+    protein_conv_dd,protein_nconv_dd=trimming_discrepancy_dd(brhprotein_dd)
+
+    exacommonp,exanotcommonp=compare_tp(exa_conv_dd,protein_conv_dd)
+    cdscommonp,cdsnotcommonp=compare_tp(cds_conv_dd,protein_conv_dd)
+
+    with open('exalignnotcommonwithbrh.txt','w') as txt:
+        txt.write('\n'.join(exanotcommonp))
+    txt.close()
+
+    with open('cdsnotcommonwithbrh.txt','w') as txt:
+        txt.write('\n'.join(cdsnotcommonp)) 
+    txt.close()
+
+    commonnames,notcommonexa,notcommoncds=compare_dd(exa_conv_dd,cds_conv_dd)
+
+    return None
+
+def doubledictionary_transcripts_excluded(blast1,blast2,exaligntab1,exaligntab2, cdsrbh,exalignrbh, perc,bit,exnmatch,scoreratio):
+    from software.library.rbh import Rbh
+    from software.library.exalign import exaligndict_rbh    
+    from software.library.doubledictionary import compare_transcript
+    from software.library.excludedfunctions import getexcluded1,getexcluded2
+    brhcds=list(Rbh(cdsrbh).readrbhpath().keys())
+    brhexa=list(exaligndict_rbh(exalignrbh).name)
+    brhcds=[i.strip('\n').split('\t') for i in brhcds]
+    brhexa=[i.strip('\n').split('\t') for i in brhexa]
+
+    commontrnsc,notcommontrnscexa,notcommontrnsccds=compare_transcript(brhexa,brhcds)
+
+    dexa={i:i for i in notcommontrnscexa}
+    dcds={i:i for i in notcommontrnsccds}
+
+    getexcluded2(exaligntab1,exaligntab2,dcds,perc,bit)#0,0
+    getexcluded1(blast1,blast2,dexa,exnmatch,scoreratio)#0,0
+    
+    return None

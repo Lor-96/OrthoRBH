@@ -7,4 +7,3 @@ def exalign_pipeline(blast1,blast2,percentage,threshold,pval,score):
     exaligntab(blast2).pltexaligntop1(species = 'species2')
     return rbh
 
-

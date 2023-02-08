@@ -1,6 +1,6 @@
 
 from software.library.blast import Blast
-from software.library.gtf_funcitons import get_name_protein_transcript_from_cds_in_gtf
+from software.library.gtf_functions import get_name_protein_transcript_from_cds_in_gtf
 from software.library.rbh import Rbh
 from software.library.doubledictionary import doubledictionary_pipeline,doubledictionary_exalign_pipeline
 from software.library.functions import unique_file
@@ -214,8 +214,4 @@ def rbh_workflow(blast1,blast2,gtfsp1,gtfsp2,percentage,threshold,pval,score,tra
                 trnscr_name_sp1=dict(zip(dfsp1['Transcript'],dfsp1['Gene name']))
                 trnscr_name_sp2=dict(zip(dfsp2['Transcript'],dfsp2['Gene name']))
                 doubledictionary_pipeline(rbh_pro_tr,trnscr_name_sp1,trnscr_name_sp2)
-
-    
-
-    
 
