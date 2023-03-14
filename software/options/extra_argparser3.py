@@ -5,7 +5,7 @@ def argparserextra3():
     import parser
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-rbh',type=str , required=True ,metavar='--RBH', help='RBH file')
+    parser.add_argument('-rbh',type=str , required=True ,metavar='--RBH', help='RBH file96  ')
     parser.add_argument('-odb',type=str , required=True ,metavar='--OrthoDB', help='OrthoDB Orthologs file')
     parser.add_argument('-t1',type=str , required=True ,metavar='--Tab_sp1', help='Species 1 table from extra_2')
     parser.add_argument('-t2',type=str , required=True , metavar='--Tab_sp2', help='Species 2 table from extra_2')

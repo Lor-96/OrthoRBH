@@ -19,4 +19,3 @@ if __name__ == "__main__":
     r['source'](rsource+"barplotfunction.R")
     barplot_function_r=robjects.globalenv['barplotnotcommon']
     barplot_function_r(mgi_db,odb_db,biomart_db,exanotcom, cdsnotcom)
-

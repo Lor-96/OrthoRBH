@@ -28,7 +28,7 @@ class exaligntab():
         print(header)
         return header
 
-    def pltexaligntop1(self,species):
+    def pltexaligntop1(self,species, exonmatchp , scorematch):
         import pandas as pd
         import matplotlib.pyplot as plt
         from software.library.functions import unique_file 
@@ -37,41 +37,171 @@ class exaligntab():
         colnames=self.getexalign_header_tab()
         df_sp=pd.DataFrame(sp.values(),columns=colnames)
         print('The number of hits in the dataframe is: '+str(len(df_sp)))
-        df_sp=df_sp.loc[(df_sp['PVALUE'] < 0.001) & (df_sp['SCORE'] >= 0)]
+        df_sp=df_sp.loc[(df_sp['PVALUE'] <= 0.001) & (df_sp['SCORE'] >= 0)]
         print('The number of hits selected is: '+str(len(df_sp)))
 
-        def plot_exonmatch(dataframe,species=str):
-            num_bins=30
-            file_name=f'exon_match_frequency_{species}.png'
+        def plot_exonmatch(dataframe,species, exonmatchp = exonmatchp):
+            num_bins=50
+            file_name=f'exon_match_counts_{species}.png'
             filename=unique_file(f"{file_name}")
-            title=f'Exon match percentage frequency {species}'
-            plt.figure()
-            plt.hist(dataframe['EX_M%'], num_bins, facecolor='red', alpha=0.5,rwidth=0.8)
-            plt.xlabel('EX_M%')
-            plt.ylabel('Frequency')
+            title=f'Exon match percentage counts {species}'
+            plt.figure(figsize=(10,10))
+            plt.axvline((exonmatchp), color='red', linestyle='dashed', linewidth=1)
+            plt.hist(dataframe['EX_M%'], num_bins, facecolor='indigo', alpha=0.5,rwidth=0.8)
+            plt.xlabel('Exon match percentage')
+            plt.ylabel('Counts')
             plt.title(title, loc='center')
             plt.savefig(f"{filename}")
 
             return None
 
-        def plot_exonscore(dataframe,species=str):
-            num_bins=30
+        def plot_exonnormscore(dataframe,species, scorematch = scorematch):
+            import numpy as np
+            num_bins=50
+            file_name=f'score_match_normalized_distribution_{species}.png'
+            filename=unique_file(f"{file_name}")
+            title=f'Score match distribution {species}'
+            plt.figure(figsize=(10,10))
+            plt.hist(dataframe['SCORE']/dataframe['QEXN'], num_bins, facecolor='deepskyblue', alpha=0.5,rwidth=0.8)
+            plt.xlabel('Normalized SCORE')
+            plt.ylabel('Counts')
+            plt.title(title, loc='center')
+            plt.savefig(f"{filename}")
+
+            file_name1=f'Score-number_of_exon_{species}.png'
+            filename1=unique_file(f"{file_name1}")
+            title=f'Score - number of exons {species}'
+            plt.figure(figsize=(10,10))
+            plt.scatter(x=dataframe['SCORE'], y=dataframe['QEXN'], marker="o", c='turquoise', alpha=0.2)
+            plt.xlabel('SCORE')
+            plt.ylabel('Number of exons query')
+            plt.title(title, loc='center')
+            plt.savefig(f"{filename1}")
+
+            return None
+
+        def plot_exonscore(dataframe,species, scorematch = scorematch):
+            num_bins=50
             file_name=f'score_match_distribution_{species}.png'
             filename=unique_file(f"{file_name}")
             title=f'Score match distribution {species}'
-            plt.figure()
-            plt.hist(dataframe['SCORE']/dataframe['QEXN'], num_bins, facecolor='blue', alpha=0.5,rwidth=0.8)
-            plt.xlabel('Normalized SCORE')
-            plt.ylabel('Frequency')
+            plt.figure(figsize=(10,10))
+            plt.axvline((scorematch), color='red', linestyle='dashed', linewidth=1)
+            plt.hist(dataframe['SCORE'], num_bins, facecolor='deepskyblue', alpha=0.5,rwidth=0.8)
+            plt.xlabel('SCORE')
+            plt.ylabel('Counts')
             plt.title(title, loc='center')
             plt.savefig(f"{filename}")
 
             return None
-
-        plot_exonmatch(df_sp,species)
-        plot_exonscore(df_sp,species)
+        
+        plot_exonmatch(df_sp,species, exonmatchp=exonmatchp)
+        plot_exonnormscore(df_sp,species, scorematch=scorematch)
+        plot_exonscore(df_sp,species, scorematch=scorematch)
+        
         return None
 
+    def pltexaligntop1nofilt(self, pvalue, score, species):
+        import pandas as pd
+        import matplotlib.pyplot as plt
+        import numpy as np
+        import seaborn as sns
+        from software.library.functions import unique_file, floatorint
+
+        sp=self.top1hitexalign()
+        colnames=self.getexalign_header_tab()
+        df_sp=pd.DataFrame(sp.values(),columns=colnames)
+        lista=list(df_sp['PVALUE'])
+
+        def findminimum(dataframe):
+            z=str(min(dataframe['PVALUE']))
+            if 'e' in z:
+                zl=list(z)
+                z1=str(floatorint(z[-1])+1)
+                zl[-1]=z1
+                zm=''.join(zl)
+            if not 'e' in z:
+                if '.' in z:
+                    zl=list(z)
+                    z1=str(floatorint(z[-1])+1)
+                    zl[-1]=z1
+                    zm=''.join(zl)
+            if not '.' in z and not 'e' in z:
+                zm=z+'.1'
+            return zm
+        
+        zmin=findminimum(df_sp)
+        lista2=[]
+        for i in lista:
+            if i > 1:
+                lista2.append(1)
+            elif i == 0 or i == 0.0:
+                lista2.append(floatorint(zmin))
+            else:
+                lista2.append(i)
+        lista3=[]
+        for i in lista2:
+            x=np.log10(i)
+            lista3.append(x)
+        df_sp['PVALUELOG']=lista3
+
+        lista1=df_sp['SCORE']
+        lista4=[]
+        for i in lista1:
+            if i < 0:
+                lista4.append(np.log10(1))
+            else:
+                lista4.append(np.log10(i))
+        df_sp['LOGSCORE']= lista4
+
+        def plot_pval_score(dataframe,pvalue, score , species):
+            from matplotlib.patches import Rectangle
+            if score == 0:
+                score = 1
+            
+            file_name=f'Pvalue_distribution_{species}.png'
+            filename=unique_file(f"{file_name}")
+            title=f'Pvalue distribution {species}'
+            plt.figure(figsize=(10,10))
+            ax = sns.histplot( data=df_sp['PVALUELOG']*-1,bins=50,alpha=0.5)
+
+            cmap = plt.get_cmap('jet')
+            low = cmap(0.5)
+            high = cmap(0.8)
+
+            for index,i in enumerate(ax.patches):
+                x=i.get_x()
+                if x<np.log10(pvalue)*-1 :
+                    ax.patches[index].set_facecolor(high)
+                else:
+                    ax.patches[index].set_facecolor(low)
+            plt.title(title,loc='center')
+            plt.xlabel("Log10_PVALUE")
+            plt.ylabel("Counts")
+            handels = [Rectangle((0,0),1,1,color=c, ec='k') for c in [low, high]]
+            labels=['Less than or equal to 0.001','Greater than 0.001']
+            plt.legend(handels,labels)
+            plt.savefig(filename)
+
+
+            file_name1=f'Score_distribution_{species}.png'
+            filename1=unique_file(f"{file_name1}")
+            title1=f'Score distribution {species}'
+            logsm=list(dataframe['LOGSCORE'].loc[(dataframe["LOGSCORE"]!=0)])
+            logs0=list(dataframe['LOGSCORE'].loc[(dataframe['LOGSCORE']==0)])
+            plt.figure(figsize=(10,10))
+            #plt.axvline(np.log10(score), color='red', linestyle='dashed', linewidth=1)
+            n,bins,patches = plt.hist(logsm,bins='auto', rwidth = 2, color= 'deepskyblue', alpha=1,edgecolor='k')
+            plt.hist(logs0,bins=bins, rwidth = 2, color= 'red', alpha=1,edgecolor='k')
+            plt.title(title1,loc='center')
+            plt.xlabel("Log10_Score")
+            plt.ylabel("Counts")
+            #plt.xlim(xmin=-1.5,xmax=3)
+            plt.savefig(filename1)
+        
+        dataframe=plot_pval_score(df_sp,pvalue = pvalue, score = score, species= species )
+
+        return None
 
     def exaligntop2(self,percentage,pval,score):
         with open(self.path,'r') as file:
@@ -93,7 +223,7 @@ class exaligntab():
                 v=[query,floatorint(col[1].strip()), subject] + list(map(floatorint,col[3:]))
                 lista.append(v)
         df=pd.DataFrame(lista,columns=header) 
-        df=df.loc[(df['PVALUE'] < pval) & (df['SCORE'] >= score)]#0.001, 0
+        df=df.loc[(df['PVALUE'] <= pval) & (df['SCORE'] >= score)]#0.001, 0
         f=iter(df.values.tolist())
         d={}
         for line in f:
@@ -272,7 +402,7 @@ class exaligntab():
         for v in brh.values():
             line.append(v)
         with open(filename,'w') as text:
-            text.write('\n\n'.join())
+            text.write('\n\n'.join(line))
         text.close()
 
         return brh

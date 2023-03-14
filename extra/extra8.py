@@ -11,4 +11,4 @@ if __name__ == "__main__":
     gtf1=params['gtf1']
     gtf2=params['gtf2']
 
-    ex8.extra_n8_pipeline(rbhcds,rbhprotein,gtf1,gtf2)
+    ex8.extra_n8_pipeline(rbhprotein = rbhprotein, rbhcds=rbhcds ,gtf1 = gtf1,gtf2 =gtf2)

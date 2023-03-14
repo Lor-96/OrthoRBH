@@ -25,7 +25,7 @@ barplotnotcommon <- function(mgi_db,odb_db,biomart_db,exanotcom, cdsnotcom) {
       geom_bar(stat="identity", fill="#f68060", alpha=.85, width=.95) +
       coord_flip(ylim = c(0,2500) ,expand = TRUE) +
       xlab("") +
-      ylab("Exalign Orthologs in other databases") +
+      ylab("Exalign-OrthoRBH Orthologs in other databases") +
       theme_bw())
     
     dev.off()
@@ -63,7 +63,7 @@ barplotnotcommon <- function(mgi_db,odb_db,biomart_db,exanotcom, cdsnotcom) {
       geom_bar(stat="identity", fill="#f68060", alpha=.85, width=.95) +
       coord_flip(ylim = c(0,2500) ,expand = TRUE) +
       xlab("") +
-      ylab("CDS-RBH Orthologs in other databases") +
+      ylab("CDS-OrthoRBH Orthologs in other databases") +
       theme_bw())
     
     dev.off()

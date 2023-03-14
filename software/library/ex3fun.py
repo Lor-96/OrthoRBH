@@ -61,6 +61,7 @@ def odb_refseq_table(d1,d2,dorthodb,dbrh):
 
 def getexcluded(path1,path2,dictionary,percent,threshold):
     import time
+    from software.library.functions import unique_file
     start_time = time.time()
 
     def floatorint(string):
@@ -208,21 +209,22 @@ def getexcluded(path1,path2,dictionary,percent,threshold):
                 if key in notintop.keys():
                     if not key in drep2.keys():
                         drep2.setdefault(key,line) 
-        
+      
     for k,v in drep2.items():
         if k not in drep1.keys():
             drep1.update({k:v})
     for k,v in drep1.items():
         if k not in drep2.keys():
             drep2.update({k:v})
-    
+
     miss=[]     
     for i in notintop.keys():
         if i not in drep1.keys():
             miss.append(i)
 
     if len(excluded_percentage)!=0:
-        with open('excludedpercentage.txt','w') as txt:
+        print('The number of hits that do not match the percentage threshold are: '+str(len(excluded_percentage.keys())))
+        with open(unique_file('excludedpercentage.txt'),'w') as txt:
             for k,v in excluded_percentage.items():
                 if len(v)==2:
                     line1=list(map(str,v[0][0:]))
@@ -241,7 +243,8 @@ def getexcluded(path1,path2,dictionary,percent,threshold):
         txt.close()
 
     if len(excluded_bitscore)!=0:
-        with open('excludedbitscore.txt','w') as txt:
+        print('The number of hits that do not match the bitscore threshold are: '+str(len(excluded_bitscore.keys())))
+        with open(unique_file('excludedbitscore.txt'),'w') as txt:
             for k,v in excluded_bitscore.items():
                 if len(v)==2:
                     line1=list(map(str,v[0][0:]))
@@ -260,7 +263,8 @@ def getexcluded(path1,path2,dictionary,percent,threshold):
         txt.close()
 
     if len(excluded_both)!=0:
-        with open('excludedboth.txt','w') as txt:
+        print('The number of hits that do not match both the thresholds are: '+str(len(excluded_both.keys())))
+        with open(unique_file('excludedboth.txt'),'w') as txt:
             for k,v in excluded_both.items():
                 if len(v)==2:
                     line1=list(map(str,v[0][0:]))
@@ -279,7 +283,8 @@ def getexcluded(path1,path2,dictionary,percent,threshold):
         txt.close()
 
     if len(notreciprocalpassfilt)!=0:
-        with open('notreciprocalpassfilt.txt','w') as txt:
+        print('The number of hits that match the thresholds but are not reciprocal are: '+str(len(notreciprocalpassfilt.keys())))
+        with open(unique_file('notreciprocalpassfilt.txt'),'w') as txt:
             for k,v in notreciprocalpassfilt.items():
                 if len(v)==2:
                     line1=list(map(str,v[0][0:]))
@@ -298,13 +303,15 @@ def getexcluded(path1,path2,dictionary,percent,threshold):
         txt.close()
 
     if len(drep1)!=0:
-        with open('notintop.txt','w') as txt:
+        print('The number of hits that are in the BLAST but not in top 1 are: '+str(len(drep1.keys())))
+        with open(unique_file('notintop.txt'),'w') as txt:
             for k,v in drep1.items():
                 txt.write(v)
         txt.close()
 
     if len(miss)!= 0:
-        with open('missing.txt','w') as txt:
+        print('The number of hits that are missing are: '+str(len(miss)))
+        with open(unique_file('missing.txt'),'w') as txt:
             txt.write('\n'.join(miss))
         txt.close()
 
@@ -319,7 +326,7 @@ def getexcluded(path1,path2,dictionary,percent,threshold):
         if len(v)>2:
             ratio=v[2]
             score.setdefault(name,[name,perc,ratio])
-
+    print('The number of the excluded from the RBH are: '+ str(len(score.keys())))
     return excluded_percentage, excluded_bitscore, excluded_both, notreciprocalpassfilt, notintop, miss, score
 
 def plotbitratio(dictionary):

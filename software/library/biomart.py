@@ -340,29 +340,39 @@ class Biomart:
                 val1=p_1.get(k1)
                 val2=p_2.get(k2)
                 if val1 != None and val2 != None:
-                    if val1 != None and val2 != None:
-                        key=k1+'\t'+k2
-                        if len(val1) == 1 and len(val2) == 1:
-                            r1=val1[0]
-                            r2=val2[0]
+                    key=k1+'\t'+k2
+                    if len(val1) == 1 and len(val2) == 1:
+                        r1=val1[0]
+                        r2=val2[0]
+                        val=r1+'\t'+k1+'\t'+r2+'\t'+k2
+                        if not key in ortho2.keys():
+                            ortho2.setdefault(key,[]).append(val)
+                        if key in ortho2.keys():
+                            if not val in ortho2.get(key):
+                                ortho2[key].append(val)
+                    if len(val1) > 1 and len(val2) == 1:
+                        r2=val2[0]
+                        for i in val1:
+                            r1=i.strip()
                             val=r1+'\t'+k1+'\t'+r2+'\t'+k2
                             if not key in ortho2.keys():
                                 ortho2.setdefault(key,[]).append(val)
                             if key in ortho2.keys():
                                 if not val in ortho2.get(key):
                                     ortho2[key].append(val)
-                        if len(val1) > 1 and len(val2) == 1:
-                            r2=val2[0]
-                            for i in val1:
-                                r1=i.strip()
-                                val=r1+'\t'+k1+'\t'+r2+'\t'+k2
-                                if not key in ortho2.keys():
-                                    ortho2.setdefault(key,[]).append(val)
-                                if key in ortho2.keys():
-                                    if not val in ortho2.get(key):
-                                        ortho2[key].append(val)
-                        if len(val1) == 1 and len(val2) > 1:
-                            r1=val1[0]
+                    if len(val1) == 1 and len(val2) > 1:
+                        r1=val1[0]
+                        for j in val2:
+                            r2=j.strip()
+                            val=r1+'\t'+k1+'\t'+r2+'\t'+k2
+                            if not key in ortho2.keys():
+                                ortho2.setdefault(key,[]).append(val)
+                            if key in ortho2.keys():
+                                if not val in ortho2.get(key):
+                                    ortho2[key].append(val)
+                    if len(val1) > 1 and len(val2) > 1:
+                        for i in val1:
+                            r1=i
                             for j in val2:
                                 r2=j.strip()
                                 val=r1+'\t'+k1+'\t'+r2+'\t'+k2
@@ -371,17 +381,6 @@ class Biomart:
                                 if key in ortho2.keys():
                                     if not val in ortho2.get(key):
                                         ortho2[key].append(val)
-                        if len(val1) > 1 and len(val2) > 1:
-                            for i in val1:
-                                r1=i
-                                for j in val2:
-                                    r2=j.strip()
-                                    val=r1+'\t'+k1+'\t'+r2+'\t'+k2
-                                    if not key in ortho2.keys():
-                                        ortho2.setdefault(key,[]).append(val)
-                                    if key in ortho2.keys():
-                                        if not val in ortho2.get(key):
-                                            ortho2[key].append(val)
             #ortho2={}
             #for k,v in ortho.items():
             #    k1=k.split('\t')[0].strip()

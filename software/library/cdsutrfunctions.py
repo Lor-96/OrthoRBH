@@ -1,6 +1,7 @@
 def get_cds_coordinates_and_table(gtf_path):
     import os
     import regex as re
+    from software.library.functions import unique_file
     d=[]
     with open(gtf_path,'r') as file:
         for line in file:
@@ -34,7 +35,7 @@ def get_cds_coordinates_and_table(gtf_path):
                         protein_transcript_table[key].append(value)
         protein_transcript_table={k:v[0] for k,v in protein_transcript_table.items()} 
         lista=[k+'\t'+v for k,v in protein_transcript_table.items()]
-        filename='RefSeq_transcript_to_protein_id_sp'
+        filename=unique_file('RefSeq_transcript_to_protein_id_sp')
         i=1
         while os.path.exists(f"{filename}{i}.txt"):
             i += 1
@@ -43,19 +44,6 @@ def get_cds_coordinates_and_table(gtf_path):
         txt.close()
 
     return coordinates_cds,protein_transcript_table
-
-def readoneisoID(oneiso,table_protein_transcript):
-    lista=[]
-    with open(oneiso,'r') as file:
-        for line in file:
-            if line.startswith('>'):
-                v=line.split(' ')[0].strip()
-                lista.append(v.strip('>'))
-    d={}
-    for k,v in table_protein_transcript.items():
-        if k in lista:
-            d.setdefault(k,table_protein_transcript.get(k))
-    return d
 
 def get_cds_from_genomic(coordinates_cds,genome,lista_sp):
         minus={}
@@ -112,6 +100,19 @@ def get_cds_from_genomic(coordinates_cds,genome,lista_sp):
         for k,v in cds.items():
             lista_cds.append('%s\n%s' % ('>'+k.strip(),v.strip(),))
         print('The number of the CDS is: '+str(len(cds.keys()))+' over '+str(len(lista_sp.values())))
+
+def readoneisoID(oneiso,table_protein_transcript):
+    lista=[]
+    with open(oneiso,'r') as file:
+        for line in file:
+            if line.startswith('>'):
+                v=line.split(' ')[0].strip()
+                lista.append(v.strip('>'))
+    d={}
+    for k,v in table_protein_transcript.items():
+        if k in lista:
+            d.setdefault(k,table_protein_transcript.get(k))
+    return d
 
 def get_genome(genomic_path, coordinates_cds):
     import gzip
@@ -178,6 +179,7 @@ def get_exon_coordinates(gtf_path):
 
 def get_utr_from_genomic(coordinates_cds, exon_coordinates, genome,lista_sp, return_ex=False):
     import os
+    from software.library.functions import unique_file
     plus_utr5={}
     minus_utr5={}
     plus_utr3={}
@@ -277,8 +279,8 @@ def get_utr_from_genomic(coordinates_cds, exon_coordinates, genome,lista_sp, ret
     print('The number of IDs that do not have a sequence in the UTR3 file is: '+str(len(ex3)))
 
     if return_ex == True:
-        filename5='excluded_5UTR_sp'
-        filename3='excluded_3UTR_sp'
+        filename5=unique_file('excluded_5UTR_sp')
+        filename3=unique_file('excluded_3UTR_sp')
         i=1
         while os.path.exists(f"{filename5}{i}.txt"):
             i += 1

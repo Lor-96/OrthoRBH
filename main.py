@@ -1,6 +1,4 @@
 import os
-import parser
-import argparse
 from software.library.functions import floatorint
 from software.options.argparser import argparser
 
@@ -17,12 +15,7 @@ if __name__ == "__main__":
     score=floatorint(params['sc'])
     transcript=params['tr']
 
-
     import software.rbh.rbh_workflow as rbhw
 
     rbhw.rbh_workflow(blast1,blast2,gtfsp1,gtfsp2,percentage,bitscore,pvalue,score,transcript)
     
-
-
-
-

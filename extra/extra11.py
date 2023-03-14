@@ -17,5 +17,7 @@ if __name__ == "__main__":
     bit=floatorint(params['bit'])
     exnmatch=floatorint(params['exm'])
     scoreratio=floatorint(params['sc'])
+    score=params['score']
+    pvalue=params['pval']
 
-    ex11.doubledictionary_transcripts_excluded(blast1,blast2,exaligntab1,exaligntab2, cdsrbh,exalignrbh, perc,bit,exnmatch,scoreratio)
+    ex11.doubledictionary_transcripts_excluded(blast1,blast2,exaligntab1,exaligntab2, cdsrbh,exalignrbh, perc,bit,exnmatch,scoreratio, pvalue = pvalue, score = score)

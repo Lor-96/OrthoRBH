@@ -9,6 +9,70 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
+def previewblast(blast1,blast2, percentage, threshold):
+        bl1=Blast(blast1).top2hit(0)
+        bl2=Blast(blast2).top2hit(0)
+        def plotbitratio(dictionary):
+                def floatorint(string):
+                        if type(string)==str :
+                                if string.isdigit() == True:
+                                        return int(string)
+                                elif string.isdigit() == False:
+                                        return float(string)
+                        if type(string) == int:
+                                return string
+                        if type(string) == float:
+                                return string
+                lista=[]
+                for k,v in dictionary.items():
+                        if  len(v)== 3:
+                                val=[v[0][0:]+[str(v[2])]]
+                                value=[val[0][0:12] + list(map(floatorint, val[0][12:]))]
+                                lista.append(value[0])
+                        elif len(v)==2:
+                                val=[v[0][0:]+[str(v[1])]]
+                                value=[val[0][0:12] + list(map(floatorint, val[0][12:]))]
+                                lista.append(value[0])
+                return lista
+        
+        sp1=plotbitratio(bl1)
+        sp2=plotbitratio(bl2)
+        colnames=['Query','Subject','%ID','alignment length','mismatches','gap opens','q.start','q.end','s.start','s.end','evalue','biscore','Bitratio']
+        df1=pd.DataFrame(sp1,columns=colnames)
+        df2=pd.DataFrame(sp2,columns=colnames)
+
+        def saveplotperc(dataframe,species, percentage):
+                color='darkorange'
+                file_name=f'preview_percentage_distribution_{species}.png'
+                filename=unique_file(f"{file_name}")
+                title=f'Preview Percentage Distribution {species}'
+                plt.figure(figsize=(10,10))
+                plt.axvline((percentage), color='red', linestyle='dashed', linewidth=1)
+                plt.hist(dataframe['%ID'],bins = 50, facecolor=color, alpha=0.5,rwidth=0.8)
+                plt.xlabel('Identity Percentage')
+                plt.ylabel('Counts')
+                plt.title(title, loc='center')
+                plt.savefig(f"{filename}")
+
+        def saveplotbit(dataframe,species, threshold):
+                color = 'royalblue'
+                file_name=f'preview_bitscore_distribution_{species}.png'
+                filename=unique_file(f"{file_name}")
+                title=f'Preview Bitscore Distribution {species}'
+                plt.figure(figsize=(10,10))
+                plt.axvline((threshold), color='red', linestyle='dashed', linewidth=1)
+                plt.hist(dataframe['Bitratio'],bins= 50, facecolor=color, alpha=0.5,rwidth=0.8)
+                plt.xlabel('Bitscore Ratio')
+                plt.ylabel('Counts')
+                plt.title(title, loc='center')
+                plt.savefig(f"{filename}")
+
+        saveplotperc(dataframe = df1, species = 'species1', percentage=percentage)
+        saveplotperc(dataframe = df2,species= 'species2', percentage = percentage)
+        saveplotbit(dataframe = df1, species = 'species1', threshold = threshold)
+        saveplotbit(dataframe = df2, species = 'species2', threshold = threshold)
+        return None
+
 def bestreciprocal(blast1,blast2,percentage,threshold):
                 sp1=Blast(blast1).top2hit(percentage)
                 sp2=Blast(blast2).top2hit(percentage)
@@ -159,28 +223,28 @@ def bestreciprocal(blast1,blast2,percentage,threshold):
                 return brh
 
 def saveplotperc(dataframe,species= str):
-    num_bins=30
-    color='red'
+    num_bins=50
+    color='darkorange'
     file_name=f'percentage_distribution_{species}.png'
     filename=unique_file(f"{file_name}")
     title=f'Percentage Distribution {species}'
-    plt.figure()
+    plt.figure(figsize=(10,10))
     plt.hist(dataframe['Percentage'],num_bins, facecolor=color, alpha=0.5,rwidth=0.8)
-    plt.xlabel('% ID')
-    plt.ylabel('Frequency')
+    plt.xlabel('Identity Percentage')
+    plt.ylabel('Counts')
     plt.title(title, loc='center')
     plt.savefig(f"{filename}")
 
 def saveplotbit(dataframe,species=str):
-    num_bins=30
-    color = 'blue'
+    num_bins=50
+    color = 'royalblue'
     file_name=f'bitscore_distribution_{species}.png'
     filename=unique_file(f"{file_name}")
     title=f'Bitscore Distribution {species}'
-    plt.figure()
+    plt.figure(figsize=(10,10))
     plt.hist(dataframe['Bitscore'],num_bins, facecolor=color, alpha=0.5,rwidth=0.8)
     plt.xlabel('Bitscore Ratio')
-    plt.ylabel('Frequency')
+    plt.ylabel('Counts')
     plt.title(title, loc='center')
     plt.savefig(f"{filename}")
 
@@ -195,6 +259,7 @@ def rbh_workflow(blast1,blast2,gtfsp1,gtfsp2,percentage,threshold,pval,score,tra
         rbh_exalign=[i.strip('\n').split('\t') for i in rbh_exa]
         doubledictionary_exalign_pipeline(rbh_exalign,exa_name_sp1,exa_name_sp2)
     else :
+        previewblast(blast1,blast2, percentage, threshold)
         rbh=bestreciprocal(blast1,blast2,percentage,threshold)
         sp1,sp2=Rbh(rbh).getblastlines()
         saveplotperc(sp1,'species1')

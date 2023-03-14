@@ -19,11 +19,11 @@ def extra_n10_pipeline(rbh,mgi,odb,biomart,exalign,gtf1,gtf2):
     odb=readlistortho(odb)
     biomart=readlistortho(biomart)
     exalign=readlistortho(exalign)
-    brh=set(brh)
+    rbh=set(rbh)
     mgi=set(mgi)
     odb=set(odb)
     biomart=set(biomart)
-    sets={1:brh,2:mgi,3:odb,4:biomart}
+    sets={1:rbh,2:mgi,3:odb,4:biomart}
     intersections = {}
     for n_combinations in range(1, len(sets) + 1):
         tmp = list(map(dict, itertools.combinations(sets.items(), n_combinations)))
@@ -161,6 +161,8 @@ def extra_n10_pipeline(rbh,mgi,odb,biomart,exalign,gtf1,gtf2):
                 lnexon.append('N/A')
     df['Exalign']=lexalign
     df['Exon number']=lnexon
+
+    df.to_csv(unique_file("orthologousgene_dataframe.tsv"), sep="\t")
 
     df2=df.loc[(df['N°Methods']>=2)&(df['Exalign']== True)]
     df2=df2.sort_values(['Exon number'],ascending=False)

@@ -189,6 +189,7 @@ def compare_transcript(lista1,lista2):
     for i in l2:
         if i not in l1:
             notcommonl2.append(i)
+
     return common, notcommonl1, notcommonl2
 
 def doubledictionary_pipeline(rbh,converter1,converter2):
@@ -198,13 +199,13 @@ def doubledictionary_pipeline(rbh,converter1,converter2):
         conv,notconv=trimming_discrepancy_dd(brh_dd)
         print_discrepancies(notconv)
         print_dd(conv)
-        print('Some genes are associated to more than one, number of discrepancy: '+str(len(brh_discrepancy)))
+        print('Some genes are associated to more than one, number of discrepancies: '+str(len(brh_discrepancy)))
         print('The number of discrepancy not converted is: '+str(len(notconv)))
     else:
         print_dd(brh_dd)
         print('No discrepancy found')
         print_final_tab_brh(rbh, converter1,converter2)
-        
+     
 def doubledictionary_exalign_pipeline(rbh,converter1,converter2):
     brh_dd=gene_name_result(rbh,converter1,converter2)
     brh_discrepancy=[k for k,v in brh_dd.items() if len(v) != 1]
@@ -212,7 +213,7 @@ def doubledictionary_exalign_pipeline(rbh,converter1,converter2):
         conv,notconv=trimming_discrepancy_dd(brh_dd)
         print_exalign_discrepancies(notconv)
         print_exalign_dd(conv)
-        print('Some genes are associated to more than one, number of discrepancy: '+str(len(brh_discrepancy)))
+        print('Some genes are associated to more than one, number of discrepancies: '+str(len(brh_discrepancy)))
         print('The number of discrepancy not converted is: '+str(len(notconv)))
     else:
         print_exalign_dd(brh_dd)
@@ -223,6 +224,7 @@ def doubledictionary_comaparison(rbh,exalignrbh,cdsrbh,gtf1,gtf2):
     from software.library.doubledictionary import compare_tp,compare_dd,gene_name_result, trimming_discrepancy_dd
     from software.library.gtf_functions import get_name_protein_transcript_from_cds_in_gtf
     import pandas as pd
+    from software.library.functions import unique_file
     from software.library.rbh import Rbh
     from software.library.exalign import exaligndict_rbh
 
@@ -252,20 +254,30 @@ def doubledictionary_comaparison(rbh,exalignrbh,cdsrbh,gtf1,gtf2):
 
     exacommonp,exanotcommonp=compare_tp(exa_conv_dd,protein_conv_dd)
     cdscommonp,cdsnotcommonp=compare_tp(cds_conv_dd,protein_conv_dd)
-
-    with open('exalignnotcommonwithbrh.txt','w') as txt:
+    
+    with open(unique_file('exalignnotcommonwithbrh.txt'),'w') as txt:
         txt.write('\n'.join(exanotcommonp))
     txt.close()
 
-    with open('cdsnotcommonwithbrh.txt','w') as txt:
-        txt.write('\n'.join(cdsnotcommonp)) 
+    with open(unique_file('cdsnotcommonwithbrh.txt'),'w') as txt:
+        txt.write('\n'.join(cdsnotcommonp))
+
+    print('The number or the common genes between Exalign and the protein isoforms is: '+str(len(exacommonp)))
+    print('The number or the common genes between the CDS and the protein isoforms is: '+str(len(cdscommonp)))
+    print('The number of the not common genes between Exalign and the protein isoforms is: '+str(len(exanotcommonp)))
+    print('The number of the not commomn genes between the CDS and the protein isoforms is: '+str(len(cdsnotcommonp)))
+
     txt.close()
 
     commonnames,notcommonexa,notcommoncds=compare_dd(exa_conv_dd,cds_conv_dd)
 
+    print('The number of the common genes between the genes predicted by Exalign and the CDS is:' +str(len(commonnames)))
+    print('the number of the genes not common between exalign and the CDS is: '+str(len(notcommonexa)))
+    print('The number of the genes not common between CDS and Exalign is: '+str(len(notcommoncds)))
+
     return None
 
-def doubledictionary_transcripts_excluded(blast1,blast2,exaligntab1,exaligntab2, cdsrbh,exalignrbh, perc,bit,exnmatch,scoreratio):
+def doubledictionary_transcripts_excluded(blast1,blast2,exaligntab1,exaligntab2, cdsrbh,exalignrbh, perc,bit,exnmatch,scoreratio,score,pvalue):
     from software.library.rbh import Rbh
     from software.library.exalign import exaligndict_rbh    
     from software.library.doubledictionary import compare_transcript
@@ -280,7 +292,10 @@ def doubledictionary_transcripts_excluded(blast1,blast2,exaligntab1,exaligntab2,
     dexa={i:i for i in notcommontrnscexa}
     dcds={i:i for i in notcommontrnsccds}
 
-    getexcluded2(exaligntab1,exaligntab2,dcds,perc,bit)#0,0
-    getexcluded1(blast1,blast2,dexa,exnmatch,scoreratio)#0,0
-    
+    print('The number of the common transcripts between the genes predicted by Exalign and the CDS is:' +str(len(commontrnsc)))
+    print('the number of the hits not common between exalign and the CDS is: '+str(len(dexa)))
+    print('The number of the hits not common between CDS and Exalign is: '+str(len(dcds)))
+    getexcluded1(path1 = blast1,path2 = blast2, dictionary = dexa, percent = perc, threshold = bit) #0,0
+    getexcluded2(path1 = exaligntab1, path2 = exaligntab2, dictionary = dcds, percentage = exnmatch, threshold = scoreratio, pvalue = pvalue , score = score) #0,0
+
     return None
