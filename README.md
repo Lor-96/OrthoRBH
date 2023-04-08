@@ -1,4 +1,7 @@
 # OrthoRBH
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+
 ## Introduction
 
 This software can perform a Reciprocal Best Hit (RBH) using the BLAST output as input file and return the predicted orthologs
@@ -31,7 +34,7 @@ For this software you need ALL the arguments as input, and mainly need:
 - Threshold for bitscore percentage
 
 There are also optional argument that are:
-- PVALUE is a value that is by default set to 0.001 and is necessary to filt together with the SCORE the Exalign table hits, it is recommended to not change it if you're not sure of the results.
+- EVALUE is a value that is by default set to 0.001 and is necessary to filt together with the SCORE the Exalign table hits, it is recommended to not change it if you're not sure of the results.
 - SCORE  is a value that is by default set to 0 and is necessary to filt together with the SCORE the Exalign table hits, it is recommended to not change it if you're not sure of the results.
 - Transcripts is a boolean value set it as "True" if the BLAST output that you usa as input contain transcripts instead of proteins.
 
@@ -39,7 +42,8 @@ There are also optional argument that are:
 ### Usage
 
 ```
-usage: main.py [-h] -b1 --blast1 -b2 --blast2 -gtf1 --gtf1 -gtf2 --gtf2 -perc --percentage -bit --bitscore [-pv --pvalue] [-sc --score] [-tr --transcript]
+usage: main.py [-h] -b1 --blast1 -b2 --blast2 -gtf1 --gtf1 -gtf2 --gtf2 -perc --percentage -bit --bitscore [-ev --pvalue] [-sc --score]
+               [-tr --transcript]
 
 optional arguments:
   -h, --help          show this help message and exit
@@ -49,7 +53,7 @@ optional arguments:
   -gtf2 --gtf2        GTF file for Species 2
   -perc --percentage  Threshold for the percentage of identity
   -bit --bitscore     Threshold for the Bitscore
-  -pv --pvalue        Exalign Threshold for the pvalue
+  -ev --pvalue        Exalign Threshold for the pvalue
   -sc --score         Exalign threshold for the score
   -tr --transcript    Set it as "True" if in the BLAST there are transcripts instead of proteins
 ```
