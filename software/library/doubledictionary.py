@@ -166,6 +166,7 @@ def compare_dd(dictionary1,dictionary2):
     return common,notcommon1,notcommon2
 
 def compare_transcript(lista1,lista2):
+    from software.library.functions import unique_file
     def gluevalues(lista):
         newlist=[]
         for i in lista:
@@ -178,6 +179,13 @@ def compare_transcript(lista1,lista2):
         return newlist
     l1=gluevalues(lista1)
     l2=gluevalues(lista2)
+
+    with open(unique_file('exalign-transcript.txt'), 'w') as t1, open(unique_file('CDS-transcript.txt'), 'w') as t2:
+        t1.write('\n'.join(l1))
+        t2.write('\n'.join(l2))
+    t1.close()
+    t2.close()
+
     common=[]
     notcommonl1=[]
     notcommonl2=[]
@@ -282,12 +290,21 @@ def doubledictionary_transcripts_excluded(blast1,blast2,exaligntab1,exaligntab2,
     from software.library.exalign import exaligndict_rbh    
     from software.library.doubledictionary import compare_transcript
     from software.library.excludedfunctions import getexcluded1,getexcluded2
+    from software.library.functions import unique_file
     brhcds=list(Rbh(cdsrbh).readrbhpath().keys())
     brhexa=list(exaligndict_rbh(exalignrbh).name)
     brhcds=[i.strip('\n').split('\t') for i in brhcds]
     brhexa=[i.strip('\n').split('\t') for i in brhexa]
 
     commontrnsc,notcommontrnscexa,notcommontrnsccds=compare_transcript(brhexa,brhcds)
+
+    with open(unique_file('commontranscripts.txt'),'w') as t1, open(unique_file('notcommontranscript-exalign.txt'),'w') as t2, open(unique_file('notcommontranscript-CDS.txt'),'w') as t3:
+        t1.write('\n'.join(commontrnsc))
+        t2.write('\n'.join(notcommontrnscexa))
+        t3.write('\n'.join(notcommontrnsccds))
+    t1.close()
+    t2.close()
+    t3.close()
 
     dexa={i:i for i in notcommontrnscexa}
     dcds={i:i for i in notcommontrnsccds}

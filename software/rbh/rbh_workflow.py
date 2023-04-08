@@ -1,9 +1,9 @@
 
 from software.library.blast import Blast
-from software.library.gtf_functions import get_name_protein_transcript_from_cds_in_gtf
+from software.library.gtf_functions import get_name_protein_transcript_from_cds_in_gtf,get_name_transcript_from_gtf
 from software.library.rbh import Rbh
 from software.library.doubledictionary import doubledictionary_pipeline,doubledictionary_exalign_pipeline
-from software.library.functions import unique_file
+from software.library.functions import unique_file, getnoncodingtranscriptexa
 from software.rbh.exalign_workflow import exalign_pipeline
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -252,11 +252,19 @@ def rbh_workflow(blast1,blast2,gtfsp1,gtfsp2,percentage,threshold,pval,score,tra
     if blast1.endswith('.tsv.tab') and blast2.endswith('.tsv.tab'):
         rbh=exalign_pipeline(blast1,blast2,percentage,threshold,pval,score)
         rbh_exa=[k.strip('#ID:') for k in Rbh(rbh).name]
+        with open(unique_file('transcript_exalign_RBH.txt'),'w') as txt:
+                txt.write('\n'.join(rbh_exa))
+        txt.close()
         dfsp1=get_name_protein_transcript_from_cds_in_gtf(gtfsp1)
         dfsp2=get_name_protein_transcript_from_cds_in_gtf(gtfsp2)
+        tgsp1=get_name_transcript_from_gtf(gtfsp1)
+        tgsp2=get_name_transcript_from_gtf(gtfsp2)
         exa_name_sp1=dict(zip(dfsp1['Transcript'],dfsp1['Gene name']))
         exa_name_sp2=dict(zip(dfsp2['Transcript'],dfsp2['Gene name']))
+        exa_tg_sp1=dict(zip(tgsp1['Transcript'],tgsp1['Gene name']))
+        exa_tg_sp2=dict(zip(tgsp2['Transcript'],tgsp2['Gene name']))
         rbh_exalign=[i.strip('\n').split('\t') for i in rbh_exa]
+        getnoncodingtranscriptexa(rbh_exalign = rbh_exalign, dict1 =exa_tg_sp1 , dict2= exa_tg_sp2)
         doubledictionary_exalign_pipeline(rbh_exalign,exa_name_sp1,exa_name_sp2)
     else :
         previewblast(blast1,blast2, percentage, threshold)

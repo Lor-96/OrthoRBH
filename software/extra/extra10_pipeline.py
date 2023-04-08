@@ -164,10 +164,16 @@ def extra_n10_pipeline(rbh,mgi,odb,biomart,exalign,gtf1,gtf2):
 
     df.to_csv(unique_file("orthologousgene_dataframe.tsv"), sep="\t")
 
+
     df2=df.loc[(df['N°Methods']>=2)&(df['Exalign']== True)]
     df2=df2.sort_values(['Exon number'],ascending=False)
     df3=df.loc[(df['Exalign']== False)&(df['Exon number']!= 'N/A')&(df['N°Methods']>=2)]
     df3=df3.sort_values(['Exon number'],ascending=False)
+    dtot=df.loc[(df['N°Methods']>=2)]
+    print(str(len(df)))
+    print('The number of the genes shared by Exalign that are in agreement with 2 or more methods are: '+str(len(df2)))
+    print('The number of the genes not shared by Exalign that are in agreement with 2 or more methods are: '+str(len(df3)))
+    print('The numeber of the genes that are shared by more than 1 methods are: '+str(len(dtot)))
     data1=df2['Exon number']
     data2 = df3['Exon number']
     

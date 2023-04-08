@@ -13,8 +13,8 @@ def extra_n8_pipeline(rbhprotein,rbhcds,gtf1,gtf2):
     sp1=get_name_protein_transcript_from_cds_in_gtf(gtf1)
     sp2=get_name_protein_transcript_from_cds_in_gtf(gtf2)
 
-    pt_sp1=dict(zip(sp1['Protein'],sp1['Transcript']))
-    pt_sp2=dict(zip(sp2['Protein'],sp2['Transcript']))
+    #pt_sp1=dict(zip(sp1['Protein'],sp1['Transcript']))
+    #pt_sp2=dict(zip(sp2['Protein'],sp2['Transcript']))
     tp_sp1=dict(zip(sp1['Transcript'],sp1['Protein']))
     tp_sp2=dict(zip(sp2['Transcript'],sp2['Protein']))
     pnsp1=dict(zip(sp1['Protein'],sp1['Gene name']))
@@ -63,6 +63,9 @@ def extra_n8_pipeline(rbhprotein,rbhcds,gtf1,gtf2):
             notcommon.append(i)
     
     print('The number of the genes that are common is: '+str(len(common)))
+    with open(unique_file('cds_common_oneisoform.txt'),'w') as txt:
+        txt.write('\n'.join(common))
+    txt.close()
     
     with open(unique_file('cds_notcommon_oneisoform.txt'), 'w') as txt:
         txt.write('\n'.join(notcommon))

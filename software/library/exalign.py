@@ -68,15 +68,15 @@ class exaligntab():
             plt.title(title, loc='center')
             plt.savefig(f"{filename}")
 
-            file_name1=f'Score-number_of_exon_{species}.png'
-            filename1=unique_file(f"{file_name1}")
-            title=f'Score - number of exons {species}'
-            plt.figure(figsize=(10,10))
-            plt.scatter(x=dataframe['SCORE'], y=dataframe['QEXN'], marker="o", c='turquoise', alpha=0.2)
-            plt.xlabel('SCORE')
-            plt.ylabel('Number of exons query')
-            plt.title(title, loc='center')
-            plt.savefig(f"{filename1}")
+            #file_name1=f'Score-number_of_exon_{species}.png'
+            #filename1=unique_file(f"{file_name1}")
+            #title=f'Score - number of exons {species}'
+            #plt.figure(figsize=(10,10))
+            #plt.scatter(x=dataframe['SCORE'], y=dataframe['QEXN'], marker="o", c='turquoise', alpha=0.2)
+            #plt.xlabel('SCORE')
+            #plt.ylabel('Number of exons query')
+            #plt.title(title, loc='center')
+            #plt.savefig(f"{filename1}")
 
             return None
 
@@ -159,9 +159,9 @@ class exaligntab():
             if score == 0:
                 score = 1
             
-            file_name=f'Pvalue_distribution_{species}.png'
+            file_name=f'Evalue_distribution_{species}.png'
             filename=unique_file(f"{file_name}")
-            title=f'Pvalue distribution {species}'
+            title=f'Evalue distribution {species}'
             plt.figure(figsize=(10,10))
             ax = sns.histplot( data=df_sp['PVALUELOG']*-1,bins=50,alpha=0.5)
 
@@ -176,7 +176,7 @@ class exaligntab():
                 else:
                     ax.patches[index].set_facecolor(low)
             plt.title(title,loc='center')
-            plt.xlabel("Log10_PVALUE")
+            plt.xlabel("Log10_EVALUE")
             plt.ylabel("Counts")
             handels = [Rectangle((0,0),1,1,color=c, ec='k') for c in [low, high]]
             labels=['Less than or equal to 0.001','Greater than 0.001']
@@ -457,3 +457,4 @@ class exaligndict_rbh(exaligntab):
         df=pd.DataFrame(d.values(),columns=colnames)
 
         return df
+

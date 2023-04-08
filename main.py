@@ -11,7 +11,7 @@ if __name__ == "__main__":
     gtfsp2=params['gtf2']
     percentage=floatorint(params['perc'])
     bitscore=floatorint(params['bit'])
-    pvalue=floatorint(params['pv'])
+    pvalue=floatorint(params['ev'])
     score=floatorint(params['sc'])
     transcript=params['tr']
 
