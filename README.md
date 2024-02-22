@@ -9,21 +9,20 @@ for the 2 chosen species.
 
 As input file is possible to use also the output of the Exalign Software (i.e., exalign_example.tsv.tab),
 if this type of file is used, both the recommended percentage argument (```-perc```)
-and the recommended bitscore argument (```-bit```) are 0, because the Exalign gives already a score for the match of the 2 input files.
+and the recommended bitscore argument (```-bit```) are 0, because the Exalign workflow already assigns a score for the match of the 2 input files.
 
 The GTF file can be used also in gzipped extension (```sp1.gtf.gz```).
 
 The tool can return also the discrepancies found during the assegnation of the gene names while reading the protein/transcripts.
 
-In order to efficiently predict orthologs, for the analysis of the proteins is recommended to use in this tool as input the BLASTP output 
-done bewteen two species comparing one isoform per gene.
+In order to efficiently predict orthologs, for the analysis of the proteins is recommended to use as input the BLASTP output done bewteen two species comparing one isoform per gene.
 
-For the transcripts analysis is recommended to use the Exalign Software or make a BLASTN between all the transcripts for both species and use them
+For the transcripts analysis is recommended to use the Exalign software or make a BLASTN between all the transcripts for both species and use them
 as input for the tool.
 
-Here are reported as example two file of input from a BLASTP analysis between Homo Sapiens and Mus Musculus, this file contain only the first 1000 proteins
-aligned with BLASTP, the GTF files need to be downloaded from the [RefSeq index of genomes](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/), choosing the
-species you want, for the example files you need to use *Homo Sapiens* as species1 and *Mus Musculus* as species2.
+Here two files of input (```inputblast1.txt```, ```inputblast2.txt```) have been reported as example from a BLASTP analysis between Homo Sapiens and Mus Musculus, these files contain only the first 1000 proteins
+aligned with BLASTP, the GTF files have to be downloaded from the [RefSeq index of genomes](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/), choosing the
+species you want, for files reported as example you need to use *Homo Sapiens* as species1 and *Mus Musculus* as species2.
 
 For this software you need ALL the arguments as input, and mainly need:
 - BLAST output (-outfmt 7) of the first species against the second 
@@ -34,8 +33,8 @@ For this software you need ALL the arguments as input, and mainly need:
 - Threshold for bitscore percentage
 
 There are also optional argument that are:
-- EVALUE is a value that is by default set to 0.001 and is necessary to filt together with the SCORE the Exalign table hits, it is recommended to not change it if you're not sure of the results.
-- SCORE  is a value that is by default set to 0 and is necessary to filt together with the SCORE the Exalign table hits, it is recommended to not change it if you're not sure of the results.
+- EVALUE is a value that is by default set to 0.001 and it is necessary to filter the Exalign matches together with the SCORE, it is recommended to not change it if you are not sure of the result that you want obtain.
+- SCORE  is a value that is by default set to 0 and is necessary to filt together with the SCORE the Exalign table hits, it is recommended to not change it if youn are not sure of the result that you want obtain.
 - Transcripts is a boolean value set it as "True" if the BLAST output that you usa as input contain transcripts instead of proteins.
 
 
