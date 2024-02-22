@@ -1,8 +1,6 @@
-import parser
 import argparse
 
 def argparserextra9():
-    import parser
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-cds1',type=str , required=True , metavar='--cds species1', help='CDS for species 1 from Table Browser more isoform per gene')

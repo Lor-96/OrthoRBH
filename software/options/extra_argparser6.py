@@ -1,8 +1,6 @@
-import parser
 import argparse
 
 def argparserextra6():
-    import parser
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-mgi',type=str , required=True ,metavar='--mgi_homologs', help='Homologous table from MGI site' )

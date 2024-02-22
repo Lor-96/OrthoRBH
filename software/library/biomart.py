@@ -265,12 +265,6 @@ class Biomart:
         
         ortho,ex=getorthologs(self.path , predicted)
 
-        count=0
-        orthoinv={}
-        for k,v in ortho.items():
-            for i in v:
-                count =+ 1
-
         table1=readt(tav1)
         table2=readt(tav2)
 
@@ -434,5 +428,4 @@ class Biomart:
             file1.close()
             file2.close()
             return ortho2,d1
-
 

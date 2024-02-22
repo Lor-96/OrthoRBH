@@ -1,8 +1,6 @@
-import parser
 import argparse
 
 def argparserextra12():
-    import parser
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-rbh',type=str , required=True ,metavar='-RBH Proteins', help='Orthologs predicted by OrthoRBH (genenames) from RBH for proteins')

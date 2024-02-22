@@ -1,8 +1,6 @@
-import parser
 import argparse
 
 def argparserextra5():
-    import parser
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-b',type=str , required=True , metavar='--biomart_orthologs', help='FILE DOWNLOADED FROM BIOMART WITH ORTHOLOGS' )

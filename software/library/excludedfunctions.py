@@ -163,8 +163,7 @@ def getexcluded1(path1,path2,dictionary,percent,threshold):
             miss.append(i)
 
     if len(excluded_percentage)>0:
-        print('The number of the hits that do not pass both the percentage threshold is: '+str(len(excluded_percentage.keys())))
-        with open(unique_file('blast_excludedpercentage.txt'),'w') as txt:
+        with open(unique_file('excludedpercentage.txt'),'w') as txt:
             for k,v in excluded_percentage.items():
                 if len(v)==2:
                     line1=list(map(str,v[0][0:]))
@@ -183,8 +182,7 @@ def getexcluded1(path1,path2,dictionary,percent,threshold):
         txt.close()
 
     if len(excluded_bitscore)>0:
-        print('The number of the hits that do not pass both the bitscore threshold is: '+str(len(excluded_bitscore.keys())))
-        with open(unique_file('blast_excludedbitscore.txt'),'w') as txt:
+        with open(unique_file('excludedbitscore.txt'),'w') as txt:
             for k,v in excluded_bitscore.items():
                 if len(v)==2:
                     line1=list(map(str,v[0][0:]))
@@ -203,8 +201,7 @@ def getexcluded1(path1,path2,dictionary,percent,threshold):
         txt.close()
 
     if len(excluded_both)>0:
-        print('The number of the hits that do not pass both the thresholds is: '+str(len(excluded_both.keys())))
-        with open(unique_file('blast_excludedboth.txt'),'w') as txt:
+        with open(unique_file('excludedboth.txt'),'w') as txt:
             for k,v in excluded_both.items():
                 if len(v)==2:
                     line1=list(map(str,v[0][0:]))
@@ -223,8 +220,7 @@ def getexcluded1(path1,path2,dictionary,percent,threshold):
         txt.close()
 
     if len(notreciprocalpassfilt)>0:
-        print('The number of the not reciprocal hits that pass the thresholds is: '+str(len(notreciprocalpassfilt.keys())) )
-        with open(unique_file('blast_notreciprocalpassfilt.txt'),'w') as txt:
+        with open(unique_file('notreciprocalpassfilt.txt'),'w') as txt:
             for k,v in notreciprocalpassfilt.items():
                 if len(v)==2:
                     line1=list(map(str,v[0][0:]))
@@ -243,15 +239,13 @@ def getexcluded1(path1,path2,dictionary,percent,threshold):
         txt.close()
 
     if len(drep1)>0:
-        print('The number of the hits predicted by Exalign but not in top 1 on the BLAST is: '+str(len(drep1.keys())))
-        with open(unique_file('blast_notintop.txt'),'w') as txt:
+        with open(unique_file('notintop.txt'),'w') as txt:
             for k,v in drep1.items():
                 txt.write(v)
         txt.close()
 
     if len(miss)> 0:
-        print('The number of the hits predicted by Exalign but not present in the BLAST is: '+str(len(miss)))
-        with open(unique_file('blast_missing.txt'),'w') as txt:
+        with open(unique_file('missing.txt'),'w') as txt:
             txt.write('\n'.join(miss))
         txt.close()
 
@@ -499,40 +493,51 @@ def getexcluded2(path1,path2,dictionary,percentage,threshold, pvalue, score):
     misboth1,misfrst1,misscnd1,dfmisign1,misign1,pvalscore1,exomtch1,score1,both1,intop2_1,notintop2_1,dfnotop2_1=function1(path1,dictionary,percentage,threshold, pvalue = 0.001, score = 0,swap=False)
     misboth2,misfrst2,misscnd2,dfmisign2,misign2,pvalscore2,exomtch2,score2,both2,intop2_2,notintop2_2,dfnotop2_2=function1(path2,dictionary,percentage,threshold, pvalue = 0.001, score = 0,swap=True)
     
+    
     if len(misboth1) > 0:
-        print('The number of the hits that miss both the transcript IDs using species 1 as query is: '+str(len(misboth1)))
-        with open(unique_file('exalign_missbothtab1.txt'),'w') as txt:
+        with open(unique_file('missbothtab1.txt'),'w') as txt:
             txt.write('\n'.join(misboth1))
         txt.close()
-
+    if len(misboth2)> 0:
+        with open(unique_file('missbothtab2.txt'),'w') as txt:
+            txt.write('\n'.join(misboth2))
+        txt.close()
     if len(misfrst1)>0:
-        print('The number of the hits where miss the first transcript ID using species 1 as query is : '+str(len(misfrst1)))
-        with open(unique_file('exalign_missfirstab1.txt'),'w') as txt:
+        with open(unique_file('missfirstab1.txt'),'w') as txt:
             txt.write('\n'.join(misfrst1))
         txt.close()
-
+    if len(misfrst2)>0:
+        with open(unique_file('missfirstab2.txt'),'w') as txt:
+            txt.write('\n'.join(misfrst2))
+        txt.close()
     if len(misscnd1) > 0:
-        print('The number of the hits where miss the second transcript ID using species 1 as query is : '+str(len(misscnd1)))
-        with open(unique_file('exalign_misssecondtab1.txt'),'w') as txt:
+        with open(unique_file('misssecondtab1.txt'),'w') as txt:
             txt.write('\n'.join(misscnd1))
         txt.close()
-
+    if len(misscnd2)>0:
+        with open(unique_file('misssecondtab2.txt'),'w') as txt:
+            txt.write('\n'.join(misscnd2))
+        txt.close()
     if len(misign1) >0:
-        print('The number of the transcripts IDs assigned to another transcript ID predicted by the CDS using the species 1 as query is: '+str(len(misign1)))
-        dfmisign1.to_csv(unique_file("exalign_misassigned_tab1.tsv"), sep="\t")
-        with open(unique_file('exalign_transcripts_notreciprocal_tab1.txt'),'w') as txt:
+        dfmisign1.to_csv(unique_file("gene_notreciprocal_tab1.tsv"), sep="\t")
+        with open(unique_file('gene_notreciprocal_tab1.txt'),'w') as txt:
             txt.write('\n'.join(misign1))
         txt.close()
-
+    if len(misign2)>0:
+        dfmisign2.to_csv(unique_file("gene_notreciprocal_tab2.tsv"), sep="\t")
+        with open(unique_file('gene_notreciprocal_tab2.txt'),'w') as txt:
+            txt.write('\n'.join(misign2))
+        txt.close()
     if len(pvalscore1)>0:
-        print('The number of the hits excluded by the pvalue-score filter using the species 1 as query is: '+str(len(pvalscore1)))
-        with open(unique_file('exalign_excluded_pval_scoretab1.txt'),'w') as txt:
+        with open(unique_file('excluded_pval_scoretab1.txt'),'w') as txt:
             txt.write('\n'.join(pvalscore1))
         txt.close()
-
+    if len(pvalscore2)>0:
+        with open(unique_file('excluded_pvalscoretab2.txt'),'w') as txt:
+            txt.write('\n'.join(pvalscore2))
+        txt.close()
     if len(exomtch1)>0:
-        print('The number of the hits excluded by the exon match percentage threshold using the species 1 as query is: '+str(len(exomtch1.keys())))
-        with open(unique_file('exalign_exonmatch_tab1.txt'),'w') as txt:
+        with open(unique_file('exonmatch_tab1.txt'),'w') as txt:
             for k,v in exomtch1.items():
                 if len(v)==2:
                     line1=list(map(str,v[0][0:]))
@@ -550,107 +555,8 @@ def getexcluded2(path1,path2,dictionary,percentage,threshold, pvalue, score):
                     txt.write(fline)
         txt.close()
 
-    if len(score1)>0:
-        print('The number of the hits excluded by the score threshold using the species 1 as query is: '+str(len(score1.keys())))
-        with open(unique_file('exalign_score_tab1.txt'),'w') as txt:
-            for k,v in score1.items():
-                if len(v)==2:
-                    line1=list(map(str,v[0][0:]))
-                    line1='\t'.join(line1)
-                    line2=str(v[1])+'\n'
-                    fline='\n'.join([line1,line2])
-                    txt.write(fline)
-                if len(v)==3:
-                    line1=list(map(str,v[0][0:]))
-                    line1='\t'.join(line1)
-                    line2=list(map(str,v[1][0:]))
-                    line2='\t'.join(line2)
-                    line3=str(v[2])+'\n'
-                    fline='\n'.join([line1,line2,line3])
-                    txt.write(fline)
-        txt.close()
-
-    if len(both1)>0:
-        print('The number of the hits excluded by both the thresholds using the species 1 as query is: '+str(len(both1.keys())))
-        with open(unique_file('exalign_both_tab1.txt'),'w') as txt:
-            for k,v in both1.items():
-                if len(v)==2:
-                    line1=list(map(str,v[0][0:]))
-                    line1='\t'.join(line1)
-                    line2=str(v[1])+'\n'
-                    fline='\n'.join([line1,line2])
-                    txt.write(fline)
-                if len(v)==3:
-                    line1=list(map(str,v[0][0:]))
-                    line1='\t'.join(line1)
-                    line2=list(map(str,v[1][0:]))
-                    line2='\t'.join(line2)
-                    line3=str(v[2])+'\n'
-                    fline='\n'.join([line1,line2,line3])
-                    txt.write(fline)
-        txt.close()
-
-    if len(intop2_1)>0:
-        print('The number of the hits not reciprocal in top 1 using the species 1 as query is: '+str(len(intop2_1.keys())))
-        with open(unique_file('exalign_notreciprocal_intop1_tab1.txt'),'w') as txt:
-            for k,v in intop2_1.items():
-                if len(v)==2:
-                    line1=list(map(str,v[0][0:]))
-                    line1='\t'.join(line1)
-                    line2=str(v[1])+'\n'
-                    fline='\n'.join([line1,line2])
-                    txt.write(fline)
-                if len(v)==3:
-                    line1=list(map(str,v[0][0:]))
-                    line1='\t'.join(line1)
-                    line2=list(map(str,v[1][0:]))
-                    line2='\t'.join(line2)
-                    line3=str(v[2])+'\n'
-                    fline='\n'.join([line1,line2,line3])
-                    txt.write(fline)
-        txt.close()
-
-    if len(notintop2_1)>0:
-        print('The number of the transcripts predicted from the CDS not in top 1 in Exalign using the species 1 as query is: '+str(len(notintop2_1)))
-        dfnotop2_1.to_csv(unique_file("exalign_notintop2_tab1.tsv"), sep="\t")
-        with open(unique_file('exalign_notintop2_tab1.txt'),'w') as txt:
-            txt.write('\n'.join(notintop2_1))
-        txt.close()
-
-    if len(misboth2)> 0:
-        print('The number of the hits that miss both the transcript IDs using species 2 as query is: '+str(len(misboth2)))
-        with open(unique_file('exalign_missbothtab2.txt'),'w') as txt:
-            txt.write('\n'.join(misboth2))
-        txt.close()
-
-    if len(misfrst2)>0:
-        print('The number of the hits where miss the first transcript ID using species 2 as query is : '+str(len(misfrst2)))
-        with open(unique_file('exalign_missfirstab2.txt'),'w') as txt:
-            txt.write('\n'.join(misfrst2))
-        txt.close()
-
-    if len(misscnd2)>0:
-        print('The number of the hits where miss the second transcript ID using species 2 as query is : '+str(len(misscnd2)))
-        with open(unique_file('exalign_misssecondtab2.txt'),'w') as txt:
-            txt.write('\n'.join(misscnd2))
-        txt.close()
-
-    if len(misign2)>0:
-        print('The number of the transcripts IDs assigned to another transcript ID predicted by the CDS using the species 2 as query is: '+str(len(misign2)))
-        dfmisign2.to_csv(unique_file("exalign_misassigned_tab2.tsv"), sep="\t")
-        with open(unique_file('exalign_gene_notreciprocal_tab2.txt'),'w') as txt:
-            txt.write('\n'.join(misign2))
-        txt.close()
-
-    if len(pvalscore2)>0:
-        print('The number of the hits excluded by the pvalue-score filter using the species 2 as query is: '+str(len(pvalscore2)))
-        with open(unique_file('exalign_excluded_pvalscoretab2.txt'),'w') as txt:
-            txt.write('\n'.join(pvalscore2))
-        txt.close()
-
     if len(exomtch2)>0:
-        print('The number of the hits excluded by the exon match percentage threshold using the species 2 as query is: '+str(len(exomtch2.keys())))
-        with open(unique_file('exalign_exonmatch_tab2.txt'),'w') as txt:
+        with open(unique_file('exonmatch_tab2.txt'),'w') as txt:
             for k,v in exomtch2.items():
                 if len(v)==2:
                     line1=list(map(str,v[0][0:]))
@@ -667,10 +573,26 @@ def getexcluded2(path1,path2,dictionary,percentage,threshold, pvalue, score):
                     fline='\n'.join([line1,line2,line3])
                     txt.write(fline)
         txt.close()
-
+    if len(score1)>0:
+        with open(unique_file('score_tab1.txt'),'w') as txt:
+            for k,v in score1.items():
+                if len(v)==2:
+                    line1=list(map(str,v[0][0:]))
+                    line1='\t'.join(line1)
+                    line2=str(v[1])+'\n'
+                    fline='\n'.join([line1,line2])
+                    txt.write(fline)
+                if len(v)==3:
+                    line1=list(map(str,v[0][0:]))
+                    line1='\t'.join(line1)
+                    line2=list(map(str,v[1][0:]))
+                    line2='\t'.join(line2)
+                    line3=str(v[2])+'\n'
+                    fline='\n'.join([line1,line2,line3])
+                    txt.write(fline)
+        txt.close()
     if len(score2)>0:
-        print('The number of the hits excluded by the score threshold using the species 2 as query is: '+str(len(score2.keys())))
-        with open(unique_file('exalign_score_tab2.txt'),'w') as txt:
+        with open(unique_file('score_tab2.txt'),'w') as txt:
             for k,v in score2.items():
                 if len(v)==2:
                     line1=list(map(str,v[0][0:]))
@@ -687,10 +609,26 @@ def getexcluded2(path1,path2,dictionary,percentage,threshold, pvalue, score):
                     fline='\n'.join([line1,line2,line3])
                     txt.write(fline)
         txt.close()
-
+    if len(both1)>0:
+        with open(unique_file('both_tab1.txt'),'w') as txt:
+            for k,v in both1.items():
+                if len(v)==2:
+                    line1=list(map(str,v[0][0:]))
+                    line1='\t'.join(line1)
+                    line2=str(v[1])+'\n'
+                    fline='\n'.join([line1,line2])
+                    txt.write(fline)
+                if len(v)==3:
+                    line1=list(map(str,v[0][0:]))
+                    line1='\t'.join(line1)
+                    line2=list(map(str,v[1][0:]))
+                    line2='\t'.join(line2)
+                    line3=str(v[2])+'\n'
+                    fline='\n'.join([line1,line2,line3])
+                    txt.write(fline)
+        txt.close()
     if len(both2)> 0:
-        print('The number of the hits excluded by both the thresholds using the species 2 as query is: '+str(len(both2.keys())))
-        with open(unique_file('exalign_both_tab2.txt'),'w') as txt:
+        with open(unique_file('both_tab2.txt'),'w') as txt:
             for k,v in both2.items():
                 if len(v)==2:
                     line1=list(map(str,v[0][0:]))
@@ -707,10 +645,26 @@ def getexcluded2(path1,path2,dictionary,percentage,threshold, pvalue, score):
                     fline='\n'.join([line1,line2,line3])
                     txt.write(fline)
         txt.close()
-
+    if len(intop2_1)>0:
+        with open(unique_file('notreciprocal_intop2_tab1.txt'),'w') as txt:
+            for k,v in intop2_1.items():
+                if len(v)==2:
+                    line1=list(map(str,v[0][0:]))
+                    line1='\t'.join(line1)
+                    line2=str(v[1])+'\n'
+                    fline='\n'.join([line1,line2])
+                    txt.write(fline)
+                if len(v)==3:
+                    line1=list(map(str,v[0][0:]))
+                    line1='\t'.join(line1)
+                    line2=list(map(str,v[1][0:]))
+                    line2='\t'.join(line2)
+                    line3=str(v[2])+'\n'
+                    fline='\n'.join([line1,line2,line3])
+                    txt.write(fline)
+        txt.close()
     if len(intop2_2)>0:
-        print('The number of the hits not reciprocal in top 1 using the species 2 as query is: '+str(len(intop2_2.keys())))
-        with open(unique_file('exalign_notreciprocal_intop1_tab2.txt'),'w') as txt:
+        with open(unique_file('notreciprocal_intop2_tab2.txt'),'w') as txt:
             for k,v in intop2_2.items():
                 if len(v)==2:
                     line1=list(map(str,v[0][0:]))
@@ -727,10 +681,14 @@ def getexcluded2(path1,path2,dictionary,percentage,threshold, pvalue, score):
                     fline='\n'.join([line1,line2,line3])
                     txt.write(fline)
         txt.close()
-
+    if len(notintop2_1)>0:
+        dfnotop2_1.to_csv(unique_file("notintop2_tab1.tsv"), sep="\t")
+        with open(unique_file('notintop2_tab1.txt'),'w') as txt:
+            txt.write('\n'.join(notintop2_1))
+        txt.close()
     if len(notintop2_2)>0:
-        print('The number of the transcripts predicted from the CDS not in top 1 in Exalign using the species 2 as query is: '+str(len(notintop2_2)))
-        dfnotop2_2.to_csv(unique_file("exalign_notintop2_tab2.tsv"), sep="\t")
-        with open(unique_file('exalign_notintop2_tab2.txt'),'w') as txt:
+        dfnotop2_2.to_csv(unique_file("notintop2_tab2.tsv"), sep="\t")
+        with open(unique_file('notintop2_tab2.txt'),'w') as txt:
             txt.write('\n'.join(notintop2_2))
         txt.close()
+        

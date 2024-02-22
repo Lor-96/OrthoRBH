@@ -1,8 +1,6 @@
-import parser
 import argparse
 
 def argparserextra3():
-    import parser
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-rbh',type=str , required=True ,metavar='--RBH', help='RBH file96  ')

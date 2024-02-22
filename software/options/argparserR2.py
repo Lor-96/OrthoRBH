@@ -1,4 +1,3 @@
-import parser
 import argparse
 
 def argparserR2():

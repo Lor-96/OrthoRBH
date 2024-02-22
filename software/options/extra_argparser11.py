@@ -1,8 +1,6 @@
-import parser
 import argparse
 
 def argparserextra11():
-    import parser
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-bl1',type=str , required=True ,metavar='--BLAST1', help='CDS BLAST of species 1 vs species 2 multiple isoforms')
@@ -15,8 +13,8 @@ def argparserextra11():
     parser.add_argument('-bit', type=str, required = True , metavar='--bitscore',help='Same bitscore threshold for the RBH')
     parser.add_argument('-exm',type=str,required=True,metavar='--exonmatch',help='Exon match threshold set for the RBH')
     parser.add_argument('-sc',type=str,required=True,metavar='--score',help='Score threshold set for the RBH')
-    parser.add_argument('-pval',type=str,required=False, default= 0.001, metavar='--PVALUE',help='Pvalue threshold set for the RBH together with the score (not mandatory default = 0.001)')
-    parser.add_argument('-score',type=str,required=False, default = 0, metavar='--score', help='Score threshold set for the RBH together with the pvalue (not mandatory default = 0)')
+    parser.add_argument('-pval',type=str,required=False, default= 0.001, metavar='--PVALUE',help='Pvalue threshold set for the RBH together with the score')
+    parser.add_argument('-score',type=str,required=False, default = 0, metavar='--score', help='Score threshold set for the RBH together with the pvalue')
     args = parser.parse_args()
     params = vars(args)
     return params

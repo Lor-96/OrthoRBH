@@ -1,8 +1,6 @@
-import parser
 import argparse
 
 def argparserextra4():
-    import parser
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-gtf1',type=str , required=True ,metavar='--gtf_species1', help='FILE GTF FOR SPECIES 1' )

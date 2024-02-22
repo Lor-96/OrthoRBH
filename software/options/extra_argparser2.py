@@ -1,9 +1,6 @@
-#extra_argparser2
-import parser
 import argparse
 
 def argparserextra2():
-    import parser
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-bl1',type=str , required=True ,metavar='--BLAST1', help='BLAST of species 1 ODB vs species 1 RefSeq')

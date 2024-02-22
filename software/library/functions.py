@@ -49,18 +49,3 @@ def sequence_refseq_or_orthodb(taxid,refseqfaa,odbfaa,tablespecies,switch):
         species.close()
         return d1
 
-def getnoncodingtranscriptexa(rbh_exalign,dict1,dict2):
-    noncoding=[]
-    for i in rbh_exalign:
-        transcript1=i[0].strip()
-        transcript2=i[1].strip()
-        gene1=str(dict1.get(transcript1))
-        gene2=str(dict2.get(transcript2))
-        if transcript1.startswith(('NR_','XR_')) or transcript2.startswith(('NR_','XR_')):
-            transcript=transcript1+'\t'+transcript2
-            gene=gene1+'\t'+gene2
-            noncoding.append(transcript+'\t'+gene)
-    with open(unique_file('noncoding_transcript_exalign.txt'),'w') as txt:
-        txt.write('\n'.join(noncoding))
-    txt.close()
-    return None

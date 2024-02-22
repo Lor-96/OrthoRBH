@@ -119,39 +119,3 @@ def get_name_transcript_nexon_from_gtf(gtf_path):
             d1.setdefault(k,{}).setdefault(i,len(j))
 
     return d1
-
-def get_name_transcript_from_gtf(gtf_path):
-    import regex as re
-    import pandas as pd
-    import gzip
-    rx=re.compile(r'"[^"]*"(*SKIP)(*FAIL)| \s*')
-    d={}
-    with open(gtf_path,'r') as fh:
-        for line in fh:
-            if not line.startswith('#'):
-                col=line.split('\t')
-                if  col[2]== 'exon':
-                    t=[rx.split((j.strip())) for j in col[8].split(';')]
-                    dt={i[0].strip():i[1].strip() for i in t if len(i)>1}
-                    gene=dt.get('gene_id').strip('"')
-                    transcript=dt.get('transcript_id').strip('"')
-                    #exonnumber=dt.get('exon_number').strip('"')
-                    #if gene not in d.keys():
-                    #    d.setdefault(gene,{}).setdefault(transcript,[]).append(exonnumber)
-                    #elif gene in d.keys():
-                    #    d[gene].setdefault(transcript,[]).append(exonnumber)
-                    d.setdefault(transcript,[])
-                    if not gene in d.get(transcript):
-                        d[transcript].append(gene)
-    d1={k:v[0] for k,v in d.items()}
-    lista=[]
-    for k,v in d1.items():
-        transcript=k.strip()
-        gene=v.strip()
-        value=[gene,transcript]
-        lista.append(value)
-
-    df=pd.DataFrame(lista, columns=['Gene name', 'Transcript'])
-
-    return df
-

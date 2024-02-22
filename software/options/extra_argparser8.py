@@ -1,8 +1,6 @@
-import parser
 import argparse
 
 def argparserextra8():
-    import parser
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-rbh1',type=str , required=True ,metavar='--RBH_1', help='RBH of PROTEINS (one isoform per gene) obtained from main' )

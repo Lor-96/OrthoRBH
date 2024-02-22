@@ -1,8 +1,6 @@
-import parser
 import argparse
 
 def argparserextra1():
-    import parser
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-tx1',type=str , required=True ,metavar='--taxid_species1', help='TAX ID OF THE FIRST SPECIES')
